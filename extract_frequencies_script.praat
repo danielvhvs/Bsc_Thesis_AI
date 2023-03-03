@@ -16,7 +16,6 @@ endfor
 
 interval_length = 0.01
 
-# Loop over the sound files
 for i to numberOfFiles
 	# Select sound file object
 	select Strings list
