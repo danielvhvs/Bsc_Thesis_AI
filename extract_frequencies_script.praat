@@ -36,8 +36,10 @@ for i to numberOfFiles
 	while time <= endTime
 		# Get pitch at time
 		pitch = Get value at time: time, "Hertz", "Linear"
+		pitch = round(pitch)
+		
 		# write pitch and time to file
-		appendFile: "pitch_data_questions.txt", string$ (time) +" " + string$ (pitch) + " "
+		appendFile: "pitch_data_questions.txt", string$ (round(time*1000)/1000) +" " + string$ (pitch) + " "
 		# increase time
 		time = time + interval_length
 	endwhile

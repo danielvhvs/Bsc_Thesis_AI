@@ -58,9 +58,9 @@ for i to numberOfFiles
 		time = time - interval_length
 	endwhile
 	appendFileLine: "sound_intervalRanges.txt", string$ (startSound) + " " + string$ (endSound)
+	
 	selectObject: "Sound " + filename$
 	To TextGrid... "sentence" ""
-	selectObject: "Sound " + filename$
 	selectObject: "TextGrid " + filename$
 
 	Insert boundary... 1 startSound
