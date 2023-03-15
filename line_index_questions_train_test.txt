@@ -1,0 +1,50 @@
+arm_08784_01631532058	¿Quién invento el microscopio?
+arf_02121_01382751634	¿Qué tan destruida quedó La Florida después del huracán Irma?
+arm_00610_00829084769	¿Quién subió el mejor video?
+arf_05223_01148309848	¿Cuáles son las principales diferencias?
+arm_01523_00719459576	¿Me ayudas a cambiar las bujías del coche?
+arf_09799_01052332816	¿Cuántas horas duerme un gato?
+arf_04766_01583970936	¿Me ayudás a buscarle un local donde pueda comprarle un regalo a mi esposo?
+arf_05679_02058714302	¿Me podés ayudar con el formulario?
+arf_03853_00752555711	¿Cuánto querés gastar en el casamiento?
+arm_09334_00807484387	¿Me podés mandar fotos de él?
+arf_05679_02010279531	¿En qué zona de la ciudad te gustaría vivir?
+arf_05679_01563886209	¿Sabes en donde van a ser los próximos mundiales de matemáticas?
+arm_07508_01594470267	¿Cómo puedo comunicarme con el jefe de gobierno?
+arm_08784_01785116839	¿Qué es un atasco?
+arm_08784_01227844591	¿Cuál es el árbol más alto de América del Sur?
+arf_09697_02063145460	¿Qué funciones de películas hay esta tarde?
+arm_08421_01388154643	¿Cuál es la pizza que tiene menos calorías?
+arm_08784_01611251666	¿Volaste en helicóptero?
+arf_07973_00309451060	¿En qué calle está la casa?
+arm_09334_01655954445	¿Es un vuelo directo o hace escalas?
+arf_07973_02039663672	¿Cómo se hace la soda?
+arm_05223_01292456508	¿Necesitas que te reserve un taxi?
+arm_06136_00173327986	¿Y ese canal de documentales es aburrido para chicos?
+arf_00610_01418576370	¿Me podés buscar tres computadoras diferentes?
+arm_01523_01300062159	¿Cuándo nació Napoleón Bonaparte?
+arf_05679_00567588416	¿En cuántos juegos mediterráneos ha participado?
+arf_02121_01351012941	¿Cuánto tiempo duran estas tarjetas?
+arf_03397_00896316134	¿Me podés mandar fotos de la casa?
+arm_07049_01114695363	¿Cuántos premios ha ganado?
+arf_06592_00044833158	¿Cuánto cuestan los boletos del teatro?
+arf_03397_01696519740	¿Podés verificar si hay alguna estación de tren cerca del aeropuerto?
+arm_08784_01356681364	¿Me ayudas a hacer los deberes?
+arf_01523_01138328104	¿En cuántos juegos mediterráneos ha participado?
+arm_05223_00019449778	¿Cuáles son las principales diferencias?
+arf_04766_00509321570	¿Qué necesito para pedir una tarjeta de crédito?
+arf_07508_01703329344	¿Cuáles son las noticias más recientes de las elecciones Inglesas?
+arf_07505_00869336623	¿Sabes hacer salmón ahumado?
+arf_09334_00787922674	¿En qué calle está la casa?
+arf_03397_02036283536	¿Me podés mandar fotos de tu gato?
+arf_08421_00037534060	¿Cuándo nació Napoleón Bonaparte?
+arf_07973_00330178377	¿Puedo añadir nueces a esa dieta?
+arm_01523_02088068433	¿Viste alguna vez una pantalla transparente?
+arf_00610_01676863735	¿De dónde es el director González Iñárritu?
+arf_08421_00442330426	¿Qué lugares románticos hay por acá?
+arf_02436_01750194006	¿Qué eventos importantes hay hoy?
+arm_08784_00724946158	¿Cuánto cuestan los boletos del teatro?
+arm_07049_01527383024	¿Cuántos deportes se practican en las Olimpíadas y cuántos países participan?
+arm_09334_02040943298	¿Te gustan los chocolates?
+arf_07505_01678657409	¿Sabes escanear libros?
+arf_06136_01352807522	¿Qué está sucediendo en la política de Inglaterra?

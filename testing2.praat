@@ -16,6 +16,7 @@ endfor
 
 interval_length = 0.01
 
+# Loop over the sound files
 for i to numberOfFiles
 	# Select sound file object
 	select Strings list
@@ -26,53 +27,24 @@ for i to numberOfFiles
 	
 	# Extract pitch information -time step, -pitch floor, -pitch ceiling
 	To Pitch: 0, 75, 600
+	
 	# Select pitch object that was just created
 	selectObject: "Pitch " + filename$
 	
 	time = 0
 	endTime = Get end time
 	# loop over the whole length of the sound, 0,0
-	foundStart = 0
-	foundEnd = 0
-	while time <= endTime and foundStart = 0
+	while time <= endTime
 		# Get pitch at time
 		pitch = Get value at time: time, "Hertz", "Linear"
-		if foundStart = 0 and pitch <> undefined
-			foundStart = 1
-			startSound = time	
-		endif
+		# write pitch and time to file
+		appendFile: "pitch_data_questions.txt", string$ (time) +" " + string$ (pitch) + " "
 		# increase time
 		time = time + interval_length
 	endwhile
-	
-	time = Get end time
-	time = time - 0.01
-	while time >= 0 and foundEnd = 0
-		# Get pitch at time
-		pitch = Get value at time: time, "Hertz", "Linear"
-		if foundEnd = 0 and pitch <> undefined
-			foundEnd = 1
-			endSound = time	
-		endif
-		# increase time
-		time = time - interval_length
-	endwhile
-	appendFileLine: "sound_intervalRanges.txt", string$ (startSound) + " " + string$ (endSound)
-	
-	selectObject: "Sound " + filename$
-	To TextGrid... "sentence" ""
-	selectObject: "TextGrid " + filename$
-
-	Insert boundary... 1 startSound
-	Insert boundary... 1 (startSound+0.5)
-	Insert boundary... 1 endSound
-	Insert boundary... 1 (endSound-0.5)
-	
-	Set interval text... 1 1 silence
-	Set interval text... 1 2 start
-	Set interval text... 1 3 middle
-	Set interval text... 1 4 end
-	Set interval text... 1 5 silence
+	# Go to next line in text file
+	appendFileLine: "pitch_data_questions.txt", ""
 endfor
 
+# End of Praat script
 

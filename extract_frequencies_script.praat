@@ -1,6 +1,6 @@
 
 form
-  sentence Directory ./question_sentences_test/
+  sentence Directory ./question_test/
 endform
 
 Create Strings as file list... list 'directory$'*
@@ -25,7 +25,7 @@ for i to numberOfFiles
 	selectObject: "Sound " + filename$
 	
 	# Extract pitch information -time step, -pitch floor, -pitch ceiling
-	To Pitch: 0, 75, 600
+	To Pitch: 0, 75, 500
 	
 	# Select pitch object that was just created
 	selectObject: "Pitch " + filename$
