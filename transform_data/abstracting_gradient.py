@@ -1,6 +1,9 @@
 import numpy as np
 from determine_gradient import *
 
+from sklearn.preprocessing import OrdinalEncoder
+from misc import *
+
 def gradient_case(number):
     if number == 1:
         return "step up"
@@ -108,3 +111,44 @@ def print_abstract(data,boundary):
     print(abstract2)
     abstract = padding_abstract(abstract1,abstract2)
     print(abstract)
+    
+def abstract_output(allData,boundary):
+    halfway = int(len(allData[0])/2)
+    time = np.arange(len(allData[0]))/len(allData[0])
+    doChange = 2
+    allAbstract = []
+    for idx,data in enumerate(allData):
+        change1,abChange1 = find_gradient(data[:halfway],time[:halfway],boundary)
+        change2,abChange2 = find_gradient(data[halfway:len(data)],time[halfway:len(data)],boundary)
+        abstract1 = change_abstract(abstract_gradient(change1),doChange)
+        abstract2 = change_abstract(abstract_gradient(change2),doChange)
+        abstract = padding_abstract(abstract1,abstract2)
+        allAbstract.append(abstract)
+    return allAbstract
+
+# def cat_to_number(data):
+#     numbers = []
+#     for row in range(len(data)):
+#         new = []
+#         for col in range(len(data[0])):
+#             new.append(data[row][col])
+            
+
+def generate_output(data,boundary):
+    abstract = np.array(abstract_output(data,boundary))
+    # print(abstract[0])
+    abstract = abstract.reshape(-1,1)
+    enc = OrdinalEncoder()
+    enc.fit(abstract)
+    newAbs = enc.transform(abstract)
+    newAbs = newAbs.reshape(len(data),len(abstract)//len(data))
+    # print(newAbs[0])
+    
+    return
+    
+
+if __name__ == "__main__":
+    fileName = "data/pitch_data_questions_processed_pitch.txt"
+    pitch = read_file2(os.path.abspath(os.path.join(os.pardir, fileName)))
+    B = 2.5
+    generate_output(pitch,B)
