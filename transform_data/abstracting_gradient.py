@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+import os
 from determine_gradient import *
 
 from sklearn.preprocessing import OrdinalEncoder
@@ -82,7 +84,7 @@ def change_abstract(abstract,change=0):
     if change==4:
         return change4(abstract)
     
-def padding_abstract(left,right,padL=6,padR=6):
+def padding_abstract(left,right,padL,padR):
     abstract = []
     # left side
     if len(left)>=padL:
@@ -99,7 +101,7 @@ def padding_abstract(left,right,padL=6,padR=6):
         abstract += right
     return abstract
     
-def print_abstract(data,boundary):
+def print_abstract(data,boundary,padL=6,padR=6):
     halfway = int(len(data)/2)
     time = np.arange(len(data))/len(data)
     doChange = 4
@@ -109,46 +111,56 @@ def print_abstract(data,boundary):
     abstract2 = change_abstract(abstract_gradient(change2),doChange)
     print(abstract1)
     print(abstract2)
-    abstract = padding_abstract(abstract1,abstract2)
+    abstract = padding_abstract(abstract1,abstract2,padL,padR)
     print(abstract)
     
-def abstract_output(allData,boundary):
+def abstract_output(allData,boundary,padL,padR,doChange):
     halfway = int(len(allData[0])/2)
     time = np.arange(len(allData[0]))/len(allData[0])
-    doChange = 2
+
     allAbstract = []
     for idx,data in enumerate(allData):
         change1,abChange1 = find_gradient(data[:halfway],time[:halfway],boundary)
         change2,abChange2 = find_gradient(data[halfway:len(data)],time[halfway:len(data)],boundary)
         abstract1 = change_abstract(abstract_gradient(change1),doChange)
         abstract2 = change_abstract(abstract_gradient(change2),doChange)
-        abstract = padding_abstract(abstract1,abstract2)
+        abstract = padding_abstract(abstract1,abstract2,padL,padR)
         allAbstract.append(abstract)
     return allAbstract
 
-# def cat_to_number(data):
-#     numbers = []
-#     for row in range(len(data)):
-#         new = []
-#         for col in range(len(data[0])):
-#             new.append(data[row][col])
-            
-
-def generate_output(data,boundary):
-    abstract = np.array(abstract_output(data,boundary))
-    # print(abstract[0])
+def generate_input(data,boundary,question=1,padL=6,padR=6,doChange=2):
+    abstract = np.array(abstract_output(data,boundary,padL,padR,doChange))
     abstract = abstract.reshape(-1,1)
+    
     enc = OrdinalEncoder()
     enc.fit(abstract)
     newAbs = enc.transform(abstract)
     newAbs = newAbs.reshape(len(data),len(abstract)//len(data))
-    # print(newAbs[0])
     
-    return
-    
+    df = pd.DataFrame(newAbs)
+    df["question"] = [question for _ in range(len(data))]
+    return df
 
-if __name__ == "__main__":
+def combine_df(B):
     fileName = "data/pitch_data_questions_processed_pitch.txt"
     pitch = read_file2(os.path.abspath(os.path.join(os.pardir, fileName)))
+    dfq = generate_input(pitch,B,1)
+    
+    fileName = "data/pitch_data_statements_processed_pitch.txt"
+    pitch = read_file2(os.path.abspath(os.path.join(os.pardir, fileName)))
+    dfs = generate_input(pitch,B,0)
+    
+    df = pd.concat([dfq,dfs])
+    return df
+    
+def save_input(B):
+    df = combine_df(B)
+    fileName = "data/input_sentences.csv"
+    df.to_csv(os.path.abspath(os.path.join(os.pardir, fileName)),index=False)
+    
+    
+    
+    
+if __name__ == "__main__":
     B = 2.5
-    generate_output(pitch,B)
+    save_input(B)
