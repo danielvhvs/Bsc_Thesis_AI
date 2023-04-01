@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 from determine_gradient import *
-
+from pyndl import preprocess
 from sklearn.preprocessing import OrdinalEncoder
 from misc import *
 
@@ -141,6 +141,15 @@ def generate_input(data,boundary,question=1,padL=6,padR=6,doChange=2):
     df["question"] = [question for _ in range(len(data))]
     return df
 
+def generate_input_ndl(data,boundary):
+    preprocess.create_event_file(corpus_file='../data/lcorpus.txt',
+                                event_file='../data/levent.tab.gz',
+                                allowed_symbols='a-zA-Z',
+                                context_structure='document',
+                                event_structure='consecutive_words',
+                                event_options=(1, ),
+                                cue_structure='bigrams_to_word')
+
 def combine_df(B):
     fileName = "data/pitch_data_questions_processed_pitch.txt"
     pitch = read_file2(os.path.abspath(os.path.join(os.pardir, fileName)))
@@ -157,6 +166,8 @@ def save_input(B):
     df = combine_df(B)
     fileName = "data/input_sentences.csv"
     df.to_csv(os.path.abspath(os.path.join(os.pardir, fileName)),index=False)
+
+
     
     
     
