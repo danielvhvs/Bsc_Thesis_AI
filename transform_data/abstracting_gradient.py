@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 import os
-from determine_gradient import *
+from .determine_gradient import *
 
 from sklearn.preprocessing import OrdinalEncoder
-from misc import *
+from .misc import *
 
 def gradient_case(number):
     if number == 1:
@@ -143,11 +143,11 @@ def generate_input(data,boundary,question=1,padL=6,padR=6,doChange=2):
 
 def combine_df(B):
     fileName = "data/pitch_data_questions_processed_pitch.txt"
-    pitch = read_file2(os.path.abspath(os.path.join(os.pardir, fileName)))
+    pitch = read_file2(os.path.abspath(os.path.join(fileName)))
     dfq = generate_input(pitch,B,1)
     
     fileName = "data/pitch_data_statements_processed_pitch.txt"
-    pitch = read_file2(os.path.abspath(os.path.join(os.pardir, fileName)))
+    pitch = read_file2(os.path.abspath(os.path.join(fileName)))
     dfs = generate_input(pitch,B,0)
     
     df = pd.concat([dfq,dfs])
@@ -156,11 +156,11 @@ def combine_df(B):
 def save_input(B):
     df = combine_df(B)
     fileName = "data/input_sentences.csv"
-    df.to_csv(os.path.abspath(os.path.join(os.pardir, fileName)),index=False)
+    df.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
     
     
     
     
 if __name__ == "__main__":
-    B = 2.5
+    B = 2.4
     save_input(B)
