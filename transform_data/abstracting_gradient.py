@@ -138,7 +138,7 @@ def generate_input(data,boundary,question=1,padL=6,padR=6,doChange=2):
     newAbs = newAbs.reshape(len(data),len(abstract)//len(data))
     
     df = pd.DataFrame(newAbs)
-    df["question"] = [question for _ in range(len(data))]
+    df["Question"] = [question for _ in range(len(data))]
     return df
 
 def combine_df(B):

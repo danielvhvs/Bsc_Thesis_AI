@@ -56,14 +56,20 @@ def make_cue_sets(allData,boundary,begLen,endLen,doChange):
 def make_cue_frame(cueSets,question):
     newCues = []
     for idx,cues in enumerate(cueSets):
-        cue = ["_".join(cues)]
+        cue = "_".join(cues)
         newCues.append(cue)
         
-    df = pd.DataFrame(newCues)
-    df["question"] = [question for _ in range(len(cueSets))]
+    df = pd.DataFrame({"Cues":newCues})
+    df["Outcomes"] = [question for _ in range(len(cueSets))]
     return df
 
-def generate_cue_file(B,begLen=3,endLen=3,doChange=2):
+def generate_cue_file(B,lengths=2,doChange=2):
+    if isinstance(lengths,int):
+        endLen = lengths
+        begLen = lengths
+    else:
+        endLen = lengths[1]
+        begLen = lengths[0]
     fileName = "data/pitch_data_questions_processed_pitch.txt"
     pitch = read_file2(os.path.abspath(os.path.join(fileName)))
     dfq = make_cue_frame(make_cue_sets(pitch,B,begLen,endLen,doChange),"question")
