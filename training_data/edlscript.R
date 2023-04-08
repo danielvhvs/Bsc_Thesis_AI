@@ -3,7 +3,7 @@ setwd(getSrcDirectory(function(){})[1])
 packages <-c("edl","sigmoid","readr","plotfunctions","data.table","here")
 lapply(packages, function(x) {if (!require(x, character.only=T)) {install.packages(x);require(x)}})
 
-hyper.parameters <- read_csv('../data/hyper_parameters_R.csv',show_col_types = TRUE)
+hyper.parameters <- read_csv('../data/hyper_parameters_R.csv',show_col_types = FALSE)
 print(hyper.parameters[["train_data"]])
 trainData <- read_csv(hyper.parameters[["train_data"]],show_col_types = FALSE)
 train0 <- createTrainingData(trainData,nruns=hyper.parameters[["nruns"]], random=T)

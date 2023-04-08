@@ -158,9 +158,6 @@ def save_input(B):
     fileName = "data/input_sentences.csv"
     df.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
     
-    
-    
-    
 if __name__ == "__main__":
     B = 2.4
     save_input(B)

@@ -5,3 +5,4 @@ import all the files for the package preprocess_praat_data
 
 from .misc import *
 from .preprocessing_steps import *
+from .run_praat import *

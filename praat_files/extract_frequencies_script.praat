@@ -1,6 +1,7 @@
 
 form
   sentence Directory ./question_test/
+  sentence outputfile example.txt 
 endform
 
 Create Strings as file list... list 'directory$'*
@@ -39,12 +40,12 @@ for i to numberOfFiles
 		pitch = round(pitch)
 		
 		# write pitch and time to file
-		appendFile: "pitch_data_questions.txt", string$ (round(time*1000)/1000) +" " + string$ (pitch) + " "
+		appendFile: outputfile$, string$ (round(time*1000)/1000) +" " + string$ (pitch) + " "
 		# increase time
 		time = time + interval_length
 	endwhile
 	# Go to next line in text file
-	appendFileLine: "pitch_data_questions.txt", ""
+	appendFileLine: outputfile$, ""
 endfor
 
 # End of Praat script

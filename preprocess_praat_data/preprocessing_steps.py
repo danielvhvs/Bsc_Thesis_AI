@@ -116,7 +116,7 @@ def all_preprocessing_steps(fileIN):
     take_range(fileIN+"_normalized_semitones",fileIN+"_processed_semitones",0.5,0.5,0.01)
     take_range(fileIN+"_time",fileIN+"_processed_time",0.5,0.5,0.01)
 
-def preprocessing():
+def preprocessing_data():
     fileName = "data"
     delete_dir_content(os.path.abspath(os.path.join(fileName)))
     fileName = "praat_files/pitch_data_statements"
