@@ -5,7 +5,7 @@ from .misc import *
 def filter_start_end(fileIN):
     newLine = []
     soundTime = []
-    with open(fileIN, 'r') as file:
+    with open("./praat_files/"+fileIN, 'r') as file:
         # Read in the entire file as a string
         for line in file:
             split = line.split()
@@ -20,7 +20,7 @@ def filter_start_end(fileIN):
                     end = idx
                     break
             soundTime.append((start,end))
-            newLine.append(split[start*2:((end*2)+1)])
+            newLine.append(split[start*2:(((end+1)*2)+1)])
     file.close()
     # fileIN = "pitch_data_questions_modified2.txt"
     write_file(fileIN,newLine)
@@ -119,7 +119,8 @@ def all_preprocessing_steps(fileIN):
 def preprocessing_data():
     fileName = "data"
     delete_dir_content(os.path.abspath(os.path.join(fileName)))
-    fileName = "praat_files/pitch_data_statements"
-    all_preprocessing_steps(os.path.abspath(os.path.join(fileName)))
-    fileName = "praat_files/pitch_data_questions"
-    all_preprocessing_steps(os.path.abspath(os.path.join(fileName)))
+    fileName = "pitch_data_statements"
+    all_preprocessing_steps(fileName)
+    print("statements done")
+    fileName = "pitch_data_questions"
+    all_preprocessing_steps(fileName)

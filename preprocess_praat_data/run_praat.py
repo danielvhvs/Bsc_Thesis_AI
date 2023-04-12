@@ -19,7 +19,7 @@ def delete_pitch_files():
         os.unlink(file_path)
     return
 
-def run_all(questionDir="../question_test/",statementDir="../statement_test/"):
+def run_all_praat(questionDir="../question_sentences_train/",statementDir="../statement_sentences_train/"):
     delete_pitch_files()
     run_command(statementDir,'./praat_files/extract_frequencies_script.praat',"pitch_data_statements.txt")
     run_command(questionDir,'./praat_files/extract_frequencies_script.praat',"pitch_data_questions.txt")

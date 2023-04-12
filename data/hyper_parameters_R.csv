@@ -1,2 +1,2 @@
-eta,nruns,train_data,test_data,probability_data
-0.01,10,../data/training_cues.csv,../data/validation_cues.csv,../data/validation_guesses.csv
+eta,nruns,boundary_gradient,seed,train_data,test_data,probability_data,training_weights
+0.01,100,2.4,3172,../save_progress_training/training_cues.csv,../save_progress_training/validation_cues.csv,/home/daniel/ai_thesis/Bsc_Thesis_AI/save_progress_training/validation_guesses2.csv,/home/daniel/ai_thesis/Bsc_Thesis_AI/save_progress_training/training_weights2.csv

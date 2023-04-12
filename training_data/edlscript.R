@@ -28,4 +28,4 @@ for (r in 1:nrow(testData)){
 }
 
 write.csv(actFrame,file=hyper.parameters[["probability_data"]], row.names=FALSE)
-write.csv(wm,file='../data/train_weights.csv', row.names=TRUE)
+write.csv(wm,file=hyper.parameters[["training_weights"]], row.names=TRUE)
