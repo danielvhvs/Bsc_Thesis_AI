@@ -40,5 +40,9 @@ if __name__ == "__main__":
     # preprocessing()
     # transform(B)
     # training(B)
-    trd.stats("./save_progress_training/validation_guesses2.csv")
+    # trd.stats("./save_progress_training/validation_guesses2.csv")
+    fileName = "data/pitch_data_questions_processed_pitch.txt"
+    pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))
+    tfd.plot_smooth(pitch[1],2.4)
+    
     pass

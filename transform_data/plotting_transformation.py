@@ -23,14 +23,25 @@ def plot_smooth(data,boundary):
     
     smoothL = determine_smooth_gradient_change(data[:halfway],time[:halfway],boundary)
     smoothR = determine_smooth_gradient_change(data[halfway:len(data)],time[halfway:len(data)],boundary)
-        
-    fig,frame = plt.subplots(1,1)
+    
+    fig = plt.figure()
+    frame = fig.add_subplot(2,1,2)
+    frame2 = fig.add_subplot(2,1,1)
     
     frame.plot(time[:halfway],smoothL)
     frame.plot(time[halfway:len(data)],smoothR)
         
     frame.set_xlabel("time (s)")
     frame.set_ylabel("normalized pitch (Hz)")
+    frame.set_title("(b)")
+
+    frame2.plot(time[:halfway],data[:halfway])
+    frame2.plot(time[halfway:len(data)],data[halfway:len(data)])
+    
+    frame2.set_xlabel("time (s)")
+    frame2.set_ylabel("normalized pitch (Hz)")
+    frame2.set_title("(a)")
+    fig.tight_layout()
     plt.show()
     return
 
