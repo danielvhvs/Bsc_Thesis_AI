@@ -41,7 +41,7 @@ def make_cue_sets(allData,boundary,begLen,endLen,doChange):
             cueSet.append(cue)
             i+=1
         allCues.append(cueSet)
-        
+    bgCue = "bg"
     for idx,data in enumerate(endAb):
         i=0
         cueSet = []
@@ -49,6 +49,7 @@ def make_cue_sets(allData,boundary,begLen,endLen,doChange):
             cue = "".join(data[len(data)-i-1:len(data)])+"#"
             cueSet.append(cue)
             i+=1
+        cueSet.append(bgCue)
         allCues[idx] += cueSet
              
     return allCues

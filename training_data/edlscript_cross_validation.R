@@ -3,7 +3,7 @@ setwd(getSrcDirectory(function(){})[1])
 packages <-c("edl","sigmoid","readr","plotfunctions","data.table","here")
 lapply(packages, function(x) {if (!require(x, character.only=T)) {install.packages(x);require(x)}})
 
-hyper.parameters <- read_csv('../data/hyper_parameters_R.csv',show_col_types = FALSE)
+hyper.parameters <- read_csv('../data/hyper_parameters_R_cross.csv',show_col_types = FALSE)
 
 trainData <- read_csv(hyper.parameters[["train_data"]],show_col_types = FALSE)
 train0 <- createTrainingData(trainData,nruns=hyper.parameters[["nruns"]], random=T)
@@ -28,4 +28,3 @@ for (r in 1:nrow(testData)){
 }
 
 write.csv(actFrame,file=hyper.parameters[["probability_data"]], row.names=FALSE)
-write.csv(wm,file=hyper.parameters[["training_weights"]], row.names=TRUE)
