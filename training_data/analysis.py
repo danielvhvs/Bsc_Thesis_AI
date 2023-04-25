@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 def stats(fileName):
     df = pd.read_csv(fileName)
@@ -16,4 +17,53 @@ def stats(fileName):
             else:
                 FS += 1
     return TQ, FQ, TS, FS
+
+def confusion_extract():
+    fileName = "./save_progress_training/cross_guesses"
+    data = []
+    for i in range(1,14):
+        fileN = fileName + str(i) + ".csv"
+        df = pd.read_csv(fileN)
+        total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
+        TQ = sum(df["TQ"])/total
+        FQ = sum(df["FQ"])/total
+        TS = sum(df["TS"])/total
+        FS = sum(df["FS"])/total
+        data.append((TQ,FQ,TS,FS))
+    return data
+
+def comparison_bar(data,species,attributes):
+    accuracy = [(x[0]+x[2])/sum(x) for x in data]
+    print(accuracy)
+    
+    return
+
+
         
+def next_path(path_pattern):
+    """
+    Finds the next free path in an sequentially named list of files
+
+    e.g. path_pattern = 'file-%s.txt':
+    file-1.txt
+    file-2.txt
+
+    Runs in log(n) time where n is the number of existing files in sequence
+    
+    credit: https://stackoverflow.com/questions/17984809/how-do-i-create-an-incrementing-filename-in-python
+    James
+    """
+    i = 1
+
+    # First do an exponential search
+    while os.path.exists(path_pattern % i):
+        i = i * 2
+
+    # Result lies somewhere in the interval (i/2..i]
+    # We call this interval (a..b] and narrow it down until a + 1 = b
+    a, b = (i // 2, i)
+    while a + 1 < b:
+        c = (a + b) // 2 # interval midpoint
+        a, b = (c, b) if os.path.exists(path_pattern % c) else (a, c)
+
+    return path_pattern % b

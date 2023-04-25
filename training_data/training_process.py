@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 import random
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler, SMOTE
+from .analysis import *
 
 def training_validation_mix():
     df = pd.read_csv("./data/input_cues.csv")
@@ -55,3 +56,31 @@ def testingStuff():
     df = pd.read_csv("./save_progress_training/training_cues.csv")
     print(len(df[df["Outcomes"]=="question"]))
     print(len(df[df["Outcomes"]=="statement"]))
+    
+def cross_validation(B,length,N_cross=20):
+    nruns = 100
+    eta = 0.01
+    probabilityFile="save_progress_training/validation_guesses_cross.csv"
+    probabilityFile = os.path.abspath(os.path.join(probabilityFile))
+
+    hyper_file="data/hyper_parameters_R_cross.csv"
+    hyper_file = os.path.abspath(os.path.join(hyper_file))
+    randomSeedList = []
+    accuracyList = []
+    for idx in range(N_cross):
+        randomSeed = training_validation_mix()
+        randomSeedList.append(randomSeed)
+        set_hyper_parameters_cross(eta,nruns,B,randomSeed,hyper_file,probabilityFile=probabilityFile)
+        training_in_r("./training_data/edlscript_cross_validation.R")
+        TQ,FQ,TS,FS = stats("./save_progress_training/validation_guesses_cross.csv")
+        accuracyList.append((TQ,FQ,TS,FS))
+    hyper_file="save_progress_training/hyper_parameters_R_cross%s.csv"
+    hyper_file = next_path(os.path.abspath(os.path.join(hyper_file)))
+    set_hyper_parameters_cross(eta,nruns,B,"_".join([str(j) for j in randomSeedList]),hyper_file,length,probabilityFile=probabilityFile)
+
+    df = pd.DataFrame({"TQ":[x[0] for x in accuracyList],"FQ":[x[1] for x in accuracyList],"TS":[x[2] for x in accuracyList],"FS":[x[3] for x in accuracyList]})
+    fileName="save_progress_training/cross_guesses%s.csv"
+    fileName = next_path(os.path.abspath(os.path.join(fileName)))
+    df.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
+    print("training done")
+    return
