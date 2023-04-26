@@ -53,10 +53,11 @@ if __name__ == "__main__":
     # training(B)
     # cross_validation(B)
     # multiple_runs()
-    data = trd.confusion_extract()
-    B = [2.1,2.2]
-    trd.comparison_bar(data,[str(x) for x in B],[str(x) for x in B])
-    # trd.stats("./save_progress_training/validation_guesses_cross.csv")
+    # data = trd.confusion_extract()
+    # B = [2.1]
+    # length = [(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2),(4,4),(1,3),(3,1)]
+    # trd.comparison_bar(data,[str(x) for x in B],[str(x) for x in length])
+    trd.stats("./save_progress_training/validation_guesses1.csv")
     # fileName = "data/pitch_data_questions_processed_pitch.txt"
     # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))
     # tfd.plot_smooth(pitch[1],2.4)
