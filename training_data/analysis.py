@@ -25,9 +25,9 @@ def stats(fileName):
     return TQ, FQ, TS, FS
 
 def confusion_extract():
-    fileName = "./save_progress_training/cross_guesses"
+    fileName = "./habrok_data/run1/cross_guessesM"
     data = []
-    for i in range(1,10):
+    for i in range(110):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -38,34 +38,53 @@ def confusion_extract():
         data.append((TQ,FQ,TS,FS))
     return data
 
-def comparison_bar(data,species,attributes):
-    accuracy = [(x[0]+x[2])/sum(x) for x in data]
-    
+def more_stats(data,species,attributes):
+    accuracy = np.array([(x[0]+x[2])/sum(x) for x in data]).reshape(len(species),len(attributes))
+    precision = np.array([(x[0]+x[2])/sum(x) for x in data]).reshape(len(species),len(attributes))
+    meanAcc = [sum(L)/len(L) for L in accuracy]
+    print(meanAcc)
+        
 
-    x = np.arange(len(species))  # the label locations
-    width = 0.25  # the width of the bars
+
+def comparison_bar(data,species1,attributes):
+    species = np.array(species1)
+    accuracy = np.array([(x[0]+x[2])/sum(x) for x in data]).reshape(len(species),len(attributes))
+
+    y = np.arange(len(species))  # the label locations
+    width = 0.07  # the width of the bars
     multiplier = 0
 
-    fig, ax = plt.subplots(layout='constrained')
-    barData = accuracy
-    for i in range(len(barData)):
-        offset = width * multiplier
-        rects = ax.bar(x + offset, barData[i], width, label=str(attributes[i]))
-        ax.bar_label(rects, padding=3)
-        multiplier += 1
+    Ngraphs = 3
+    fig, ax = plt.subplots(Ngraphs,1,layout='constrained')
+    oldBar = accuracy
+    barData = []
+    for i in range(len(oldBar[0])):
+        barData.append(oldBar[::,i])
+    for graph in range(Ngraphs):
+        multiplier = 0
+        x = np.arange(len(y[int(len(species)*(graph)/Ngraphs):int(len(species)*(graph+1)/Ngraphs)]))
+        print(len(barData),len(attributes))
+        for i in range(len(barData)):
+            offset = width * multiplier
+            print(int(len(barData[0])*(graph+1)/Ngraphs),(graph+1)/Ngraphs*len(barData[0]))
+            print(barData[0])
+            print(barData[i][int(len(barData[0])*(graph)/Ngraphs):int(len(barData[0])*(graph+1)/Ngraphs)])
+            rects = ax[graph].bar(x + offset, \
+                barData[i][int(len(barData[0])*(graph)/Ngraphs):int(len(barData[0])*(graph+1)/Ngraphs)], width, label=str(attributes[i]))
+            ax[graph].bar_label(rects, padding=3)
+            multiplier += 1
 
-    # Add some text for labels, title and custom x-axis tick labels, etc.
-    ax.set_ylabel('Length (mm)')
-    ax.set_title('Penguin attributes by species')
-    ax.set_xticks(x + width, species)
-    ax.legend(loc='upper left', ncols=3)
-    ax.set_ylim(0, 1)
+        # Add some text for labels, title and custom x-axis tick labels, etc.
+        ax[graph].set_ylabel('Length (mm)')
+        ax[graph].set_title('Penguin attributes by species')
+        ax[graph].set_xticks(x + width, \
+            species[int(len(species)*(graph)/Ngraphs):int(len(species)*(graph+1)/Ngraphs)])
+        ax[graph].legend(loc='upper left', ncols=3)
+        ax[graph].set_ylim(0, 1)
 
     plt.show()
     return
 
-
-        
 def next_path(path_pattern):
     """
     Finds the next free path in an sequentially named list of files

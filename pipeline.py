@@ -46,19 +46,11 @@ def multiple_runs():
             trd.cross_validation(B,L,1)
             
 if __name__ == "__main__":
-    B = 2.4
-    lengths = (1,1)
-    # preprocessing()
-    # transform(B,lengths)
-    # training(B)
-    # cross_validation(B)
-    # multiple_runs()
-    # data = trd.confusion_extract()
-    # B = [2.1]
-    # length = [(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2),(4,4),(1,3),(3,1)]
-    # trd.comparison_bar(data,[str(x) for x in B],[str(x) for x in length])
-    trd.stats("./save_progress_training/validation_guesses1.csv")
-    # fileName = "data/pitch_data_questions_processed_pitch.txt"
-    # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))
-    # tfd.plot_smooth(pitch[1],2.4)
+    species = [2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3]
+    attributes = [(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2),(4,4),(1,3),(3,1)]
+    data = trd.confusion_extract()
+    # trd.comparison_bar(data,species,attributes)
+    trd.more_stats(data,species,attributes)
+    
+
     pass

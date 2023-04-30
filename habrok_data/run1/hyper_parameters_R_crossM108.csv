@@ -1,0 +1,2 @@
+eta,nruns,boundary_gradient,seed,length_begin,length_end,train_data,test_data,probability_data
+0.01,100,3,5226_3246_9557_636_6164_5938_6851_8323_1244_8122_9360_8445_3906_2649_772_9585_8688_8941_7838_4373,1,3,../save_progress_training/training_cues.csv,../save_progress_training/validation_cues.csv,/home4/s3585131/ai_thesis/save_progress_training/validation_guesses_cross108.csv
