@@ -46,11 +46,16 @@ def multiple_runs():
             trd.cross_validation(B,L,1)
             
 if __name__ == "__main__":
-    species = [2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3]
-    attributes = [(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2),(4,4),(1,3),(3,1)]
-    data = trd.confusion_extract()
+    # species = [2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3]
+    # attributes = [(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2),(4,4),(1,3),(3,1)]
+    data = trd.confusion_extract2()
     # trd.comparison_bar(data,species,attributes)
+    species = [1 for i in range(len(data))]
+    attributes = [1]
     trd.more_stats(data,species,attributes)
+    # transform(2.4,(2,2))
+    # training(2.4)
     
+    # trd.cross_validation(2.4,(2,2),20)
 
     pass

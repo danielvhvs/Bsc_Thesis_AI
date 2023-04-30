@@ -25,9 +25,9 @@ def stats(fileName):
     return TQ, FQ, TS, FS
 
 def confusion_extract():
-    fileName = "./habrok_data/run1/cross_guessesM"
+    fileName = "./habrok_data/cross_guesses"
     data = []
-    for i in range(110):
+    for i in range(1,2):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -38,11 +38,39 @@ def confusion_extract():
         data.append((TQ,FQ,TS,FS))
     return data
 
+def confusion_extract2():
+    fileName = "./save_progress_training/cross_guesses1.csv"
+    data = []
+    df = pd.read_csv(fileName)
+    print(len(df["TQ"]))
+    for i in range(len(df["TQ"])):
+        TQ = df["TQ"][i]
+        FQ = df["FQ"][i]
+        TS = df["TS"][i]
+        FS = df["FS"][i]
+        data.append((TQ,FQ,TS,FS))
+    return data
+
 def more_stats(data,species,attributes):
     accuracy = np.array([(x[0]+x[2])/sum(x) for x in data]).reshape(len(species),len(attributes))
-    precision = np.array([(x[0]+x[2])/sum(x) for x in data]).reshape(len(species),len(attributes))
+    
+    precisionQuestions = np.array([(x[0])/(x[0]+x[1]) for x in data]).reshape(len(species),len(attributes))
+    precisionStatements = np.array([(x[2])/(x[2]+x[3]) for x in data]).reshape(len(species),len(attributes))
+    
+    recallQuestions = np.array([(x[0])/(x[0]+x[3]) for x in data]).reshape(len(species),len(attributes))
+    recallStatements = np.array([(x[2])/(x[1]+x[2]) for x in data]).reshape(len(species),len(attributes))
+    
     meanAcc = [sum(L)/len(L) for L in accuracy]
+    meanRecallQ = [sum(L)/len(L) for L in precisionQuestions]
+    meanRecallS = [sum(L)/len(L) for L in precisionStatements]
+    meanPrecQ = [sum(L)/len(L) for L in recallQuestions]
+    meanPrecS = [sum(L)/len(L) for L in recallStatements]
     print(meanAcc)
+    print(meanRecallQ)
+    print(meanRecallS)
+    print(meanPrecQ)
+    print(meanPrecS)
+    return
         
 
 

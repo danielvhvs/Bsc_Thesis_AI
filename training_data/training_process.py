@@ -7,9 +7,9 @@ import numpy as np
 from imblearn.over_sampling import RandomOverSampler, SMOTE
 from .analysis import *
 
-def training_validation_mix():
+def training_validation_mix(randomNumber):
     df = pd.read_csv("./data/input_cues.csv")
-    randomNumber = random.randint(1,10000)
+    randomN = random.randint(1,10000)
     x_train, x_test, y_train, y_test = train_test_split(df["Cues"], df["Outcomes"], test_size=0.2,random_state=randomNumber)
     x_train = np.array(x_train).reshape(-1,1)
     # Randomly over sample the minority class
@@ -68,7 +68,7 @@ def cross_validation(B,length,N_cross=20):
     randomSeedList = []
     accuracyList = []
     for idx in range(N_cross):
-        randomSeed = training_validation_mix()
+        randomSeed = training_validation_mix(idx)
         randomSeedList.append(randomSeed)
         set_hyper_parameters_cross(eta,nruns,B,randomSeed,hyper_file,probabilityFile=probabilityFile)
         training_in_r("./training_data/edlscript_cross_validation.R")
