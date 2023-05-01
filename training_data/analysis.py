@@ -25,9 +25,9 @@ def stats(fileName):
     return TQ, FQ, TS, FS
 
 def confusion_extract():
-    fileName = "./habrok_data/cross_guesses"
+    fileName = "./habrok_data/run2/cross_guessesM"
     data = []
-    for i in range(1,2):
+    for i in range(176):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -76,40 +76,45 @@ def more_stats(data,species,attributes):
 
 def comparison_bar(data,species1,attributes):
     species = np.array(species1)
-    accuracy = np.array([(x[0]+x[2])/sum(x) for x in data]).reshape(len(species),len(attributes))
+    accuracy = np.round(np.array([(x[0]+x[2])/sum(x) for x in data]),2)
+    meanA = np.mean(accuracy)
+    accuracy = accuracy.reshape(len(species),len(attributes))
+    accuracy = accuracy[:-1]
+    species = species[:-1]
 
     y = np.arange(len(species))  # the label locations
-    width = 0.07  # the width of the bars
+    width = 0.06  # the width of the bars
     multiplier = 0
 
-    Ngraphs = 3
-    fig, ax = plt.subplots(Ngraphs,1,layout='constrained')
+    Ngraphs = 5
+    newNgraphs = 5
+    fig, ax = plt.subplots(newNgraphs,1)
     oldBar = accuracy
     barData = []
+    graphName = ["(a)","(b)","(c)","(d)","(e)"]
     for i in range(len(oldBar[0])):
         barData.append(oldBar[::,i])
-    for graph in range(Ngraphs):
+    for graph in range(newNgraphs):
         multiplier = 0
         x = np.arange(len(y[int(len(species)*(graph)/Ngraphs):int(len(species)*(graph+1)/Ngraphs)]))
-        print(len(barData),len(attributes))
         for i in range(len(barData)):
             offset = width * multiplier
-            print(int(len(barData[0])*(graph+1)/Ngraphs),(graph+1)/Ngraphs*len(barData[0]))
-            print(barData[0])
-            print(barData[i][int(len(barData[0])*(graph)/Ngraphs):int(len(barData[0])*(graph+1)/Ngraphs)])
+
             rects = ax[graph].bar(x + offset, \
                 barData[i][int(len(barData[0])*(graph)/Ngraphs):int(len(barData[0])*(graph+1)/Ngraphs)], width, label=str(attributes[i]))
             ax[graph].bar_label(rects, padding=3)
             multiplier += 1
 
         # Add some text for labels, title and custom x-axis tick labels, etc.
-        ax[graph].set_ylabel('Length (mm)')
-        ax[graph].set_title('Penguin attributes by species')
+        # ax[graph].axhline(meanA)
+        ax[graph].set_ylabel('accuracy')
+        ax[graph].set_title(graphName[graph])
         ax[graph].set_xticks(x + width, \
             species[int(len(species)*(graph)/Ngraphs):int(len(species)*(graph+1)/Ngraphs)])
-        ax[graph].legend(loc='upper left', ncols=3)
         ax[graph].set_ylim(0, 1)
-
+    ax[0].set_ylim(0,2.2)
+    ax[0].legend(loc="upper left",ncol=8)
+    #fig.tight_layout()
     plt.show()
     return
 
