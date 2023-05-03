@@ -25,9 +25,9 @@ def stats(fileName):
     return TQ, FQ, TS, FS
 
 def confusion_extract():
-    fileName = "./habrok_data/run2/cross_guessesM"
+    fileName = "./habrok_data/run4/cross_guessesM"
     data = []
-    for i in range(176):
+    for i in range(24):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -53,23 +53,26 @@ def confusion_extract2():
 
 def more_stats(data,species,attributes):
     accuracy = np.array([(x[0]+x[2])/sum(x) for x in data]).reshape(len(species),len(attributes))
-    
     precisionQuestions = np.array([(x[0])/(x[0]+x[1]) for x in data]).reshape(len(species),len(attributes))
     precisionStatements = np.array([(x[2])/(x[2]+x[3]) for x in data]).reshape(len(species),len(attributes))
     
     recallQuestions = np.array([(x[0])/(x[0]+x[3]) for x in data]).reshape(len(species),len(attributes))
     recallStatements = np.array([(x[2])/(x[1]+x[2]) for x in data]).reshape(len(species),len(attributes))
     
+    F1Q = 1/((1/precisionQuestions+1/recallQuestions)/2)
+    F1S = 1/((1/precisionStatements+1/recallStatements)/2)
+    
     meanAcc = [sum(L)/len(L) for L in accuracy]
     meanRecallQ = [sum(L)/len(L) for L in precisionQuestions]
     meanRecallS = [sum(L)/len(L) for L in precisionStatements]
     meanPrecQ = [sum(L)/len(L) for L in recallQuestions]
     meanPrecS = [sum(L)/len(L) for L in recallStatements]
-    print(meanAcc)
-    print(meanRecallQ)
-    print(meanRecallS)
-    print(meanPrecQ)
-    print(meanPrecS)
+    # print(meanAcc)
+    # print(meanRecallQ)
+    # print(meanRecallS)
+    # print(meanPrecQ)
+    # print(meanPrecS)
+    
     return
         
 
@@ -77,23 +80,39 @@ def more_stats(data,species,attributes):
 def comparison_bar(data,species1,attributes):
     species = np.array(species1)
     accuracy = np.round(np.array([(x[0]+x[2])/sum(x) for x in data]),2)
-    meanA = np.mean(accuracy)
-    accuracy = accuracy.reshape(len(species),len(attributes))
-    accuracy = accuracy[:-1]
-    species = species[:-1]
+
+    precisionQuestions = np.array([(x[0])/(x[0]+x[1]) for x in data]).reshape(len(attributes),len(species))
+    precisionStatements = np.array([(x[2])/(x[2]+x[3]) for x in data]).reshape(len(attributes),len(species))
+    
+    recallQuestions = np.array([(x[0])/(x[0]+x[3]) for x in data]).reshape(len(attributes),len(species))
+    recallStatements = np.array([(x[2])/(x[1]+x[2]) for x in data]).reshape(len(attributes),len(species))
+    
+    F1Q = 1/((1/precisionQuestions+1/recallQuestions)/2)
+    F1S = 1/((1/precisionStatements+1/recallStatements)/2)
+
+    precisionQuestions = np.round(precisionQuestions,2)
+    precisionStatements = np.round(precisionStatements,2)
+    
+    recallQuestions = np.round(recallQuestions,2)
+    recallStatements = np.round(recallStatements,2)
+    
+    F1Q = np.round(F1Q,2)
+    F1S = np.round(F1S,2)
+    
+    accuracy = accuracy.reshape(len(attributes),len(species))
 
     y = np.arange(len(species))  # the label locations
-    width = 0.06  # the width of the bars
+    width = 0.01  # the width of the bars
     multiplier = 0
 
-    Ngraphs = 5
-    newNgraphs = 5
+    Ngraphs = 3
+    newNgraphs = Ngraphs
     fig, ax = plt.subplots(newNgraphs,1)
     oldBar = accuracy
-    barData = []
+    barData = oldBar
     graphName = ["(a)","(b)","(c)","(d)","(e)"]
-    for i in range(len(oldBar[0])):
-        barData.append(oldBar[::,i])
+    # for i in range(len(oldBar[0])):
+    #     barData.append(oldBar[::,i])
     for graph in range(newNgraphs):
         multiplier = 0
         x = np.arange(len(y[int(len(species)*(graph)/Ngraphs):int(len(species)*(graph+1)/Ngraphs)]))
@@ -112,9 +131,9 @@ def comparison_bar(data,species1,attributes):
         ax[graph].set_xticks(x + width, \
             species[int(len(species)*(graph)/Ngraphs):int(len(species)*(graph+1)/Ngraphs)])
         ax[graph].set_ylim(0, 1)
-    ax[0].set_ylim(0,2.2)
-    ax[0].legend(loc="upper left",ncol=8)
-    #fig.tight_layout()
+    ax[0].set_ylim(0,1.1)
+    ax[0].legend(loc="upper left",ncol=3)
+    fig.tight_layout()
     plt.show()
     return
 

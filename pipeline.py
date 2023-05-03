@@ -17,8 +17,8 @@ def preprocessing():
     print("preprocessing done")
     return
 
-def transform(B,lengths=(2,2)):
-    tfd.generate_cue_file(B,lengths=lengths)
+def transform(B,trueFlat,lengths=(2,2),flatLength=0,flatChange=0):
+    tfd.generate_cue_file(B,trueFlat,lengths=lengths,flatLength=flatLength,flatChange=flatChange)
     print("transforming done")
     return
 
@@ -46,10 +46,10 @@ def multiple_runs():
             trd.cross_validation(B,L,1)
             
 if __name__ == "__main__":
-    species = [2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3]
-    attributes = [(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2),(4,4),(1,3),(3,1),(0,1),(0,2),(0,3),(1,0),(2,0),(3,0)]
+    species = [2.4,2.8,3.2,3.6,4,4.4,4.8,5.2]
+    attributes = [(4,4),(0,4),(4,0)]
     data = trd.confusion_extract()
-    trd.comparison_bar(data,species,attributes)
+    trd.comparison_bar(data,attributes,species)
     # species = [1 for i in range(len(data))]
     # attributes = [1]
     # trd.more_stats(data,species,attributes)

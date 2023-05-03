@@ -4,6 +4,7 @@ import os
 from .determine_gradient import *
 from .abstracting_gradient import *
 from .misc import *
+from .abstracting_flat_areas import *
 
 def word_to_letter(abstract):
     newAbstract = []
@@ -15,23 +16,29 @@ def word_to_letter(abstract):
     return newAbstract
 
 
-def make_abstract(allData,boundary,doChange):
+def make_abstract(allData,boundary,flatOrNot,doChange,flatLength,flatChange):
     halfway = int(len(allData[0])/2)
     time = np.arange(len(allData[0]))/len(allData[0])
 
     beginAbstract = []
     endAbstract = []
     for idx,data in enumerate(allData):
-        change1,abChange1 = find_gradient(data[:halfway],time[:halfway],boundary)
-        change2,abChange2 = find_gradient(data[halfway:len(data)],time[halfway:len(data)],boundary)
-        abstract1 = word_to_letter(change_abstract(abstract_gradient(change1),doChange))
-        abstract2 = word_to_letter(change_abstract(abstract_gradient(change2),doChange))
+        if flatOrNot:
+            change1 = determine_flat_areas(data[:halfway],time[:halfway],boundary)
+            change2 = determine_flat_areas(data[halfway:len(data)],time[halfway:len(data)],boundary)
+            abstract1 = word_to_letter(flat_areas(change1,flatLength,flatChange))
+            abstract2 = word_to_letter(flat_areas(change2,flatLength,flatChange))
+        else:
+            change1,abChange1 = find_gradient(data[:halfway],time[:halfway],boundary)
+            change2,abChange2 = find_gradient(data[halfway:len(data)],time[halfway:len(data)],boundary)
+            abstract1 = word_to_letter(change_abstract(abstract_gradient(change1),doChange))
+            abstract2 = word_to_letter(change_abstract(abstract_gradient(change2),doChange))
         beginAbstract.append(abstract1)
         endAbstract.append(abstract2)
     return beginAbstract,endAbstract
 
-def make_cue_sets(allData,boundary,begLen,endLen,doChange):
-    beginAb,endAb = make_abstract(allData,boundary,doChange)
+def make_cue_sets(allData,boundary,begLen,endLen,flatOrNot,doChange,flatLength,flatChange):
+    beginAb,endAb = make_abstract(allData,boundary,flatOrNot,doChange,flatLength,flatChange)
     allCues = []
     for idx,data in enumerate(beginAb):
         i=1
@@ -64,7 +71,7 @@ def make_cue_frame(cueSets,question):
     df["Outcomes"] = [question for _ in range(len(cueSets))]
     return df
 
-def generate_cue_file(B,lengths=2,doChange=2):
+def generate_cue_file(B,trueFlat,lengths=2,doChange=2,flatLength=0,flatChange=0):
     if isinstance(lengths,int):
         endLen = lengths
         begLen = lengths
@@ -73,11 +80,11 @@ def generate_cue_file(B,lengths=2,doChange=2):
         begLen = lengths[0]
     fileName = "data/pitch_data_questions_processed_pitch.txt"
     pitch = read_file2(os.path.abspath(os.path.join(fileName)))
-    dfq = make_cue_frame(make_cue_sets(pitch,B,begLen,endLen,doChange),"question")
+    dfq = make_cue_frame(make_cue_sets(pitch,B,begLen,endLen,trueFlat,doChange,flatLength,flatChange),"question")
     
     fileName = "data/pitch_data_statements_processed_pitch.txt"
     pitch = read_file2(os.path.abspath(os.path.join(fileName)))
-    dfs = make_cue_frame(make_cue_sets(pitch,B,begLen,endLen,doChange),"statement")
+    dfs = make_cue_frame(make_cue_sets(pitch,B,begLen,endLen,trueFlat,doChange,flatLength,flatChange),"statement")
     df = pd.concat([dfq,dfs])
     
     fileName = "data/input_cues.csv"

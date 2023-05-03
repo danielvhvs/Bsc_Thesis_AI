@@ -8,3 +8,4 @@ from .determine_gradient import *
 from .form_cues import *
 from .misc import *
 from .plotting_transformation import *
+from .abstracting_flat_areas import *
