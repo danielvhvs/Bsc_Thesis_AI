@@ -21,7 +21,7 @@ def determine_flat_areas(data,time,boundary):
             smooth.append(smooth[idx])
     newSmooth = []
     for idx,x in enumerate(smooth[1:]):
-        if (smooth[idx-1]==smooth(idx)):
+        if (smooth[idx-1]==smooth[idx]):
             newSmooth.append(smooth[idx])
     return newSmooth
 

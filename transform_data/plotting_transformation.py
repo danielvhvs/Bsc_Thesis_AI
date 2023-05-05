@@ -45,6 +45,19 @@ def plot_smooth(data,boundary):
     plt.show()
     return
 
+def plot_flat(allData,boundary,N=0):
+    data = allData[N]
+    fig,frame = plt.subplots(1,1)
+    halfway = int(len(data)/2)
+    time = np.arange(len(data))/len(data)
+    flatL = determine_flat_areas(data[:halfway],time[:halfway],boundary)
+    flatR = determine_flat_areas(data[halfway:len(data)],time[halfway:len(data)],boundary)
+    size = 3
+    frame.scatter(range(len(flatL)),flatL,s=size)
+    frame.scatter(range(len(flatL),len(flatL)+len(flatR)),flatR,s=size)
+    plt.show()
+    return
+
 def reduction_gradient(data,boundary):
     halfway = int(len(data)/2)
     time = np.arange(len(data))/len(data)

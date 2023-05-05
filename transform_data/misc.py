@@ -11,7 +11,7 @@ def read_file2(fileIN):
                 sentence.append(float(word))
             data.append(sentence)
     file.close()
-    return np.array(data)
+    return data
 
 def next_path(path_pattern):
     """

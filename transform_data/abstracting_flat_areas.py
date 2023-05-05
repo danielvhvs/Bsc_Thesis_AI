@@ -23,10 +23,12 @@ def flat_areas(flatList,flatLength,flatChange):
         newFlatList.append((value,count))
         idx = i
     abstract = []
+    if (newFlatList == []):
+        return abstract
     value = newFlatList[0][0]
     for idx,x in enumerate(newFlatList[1:]):
         if x[1]>=flatLength and np.abs(x[0]-value) >= flatChange:
-            if np.abs(x[0]-value) >=0:
+            if x[0]-value >=0:
                 abstract.append("Higher")
             else:
                 abstract.append("Lower")

@@ -33,7 +33,12 @@ def take_range(fileIN,fileOUT,beginLength,endLength,intervalTime = 0.01):
     newData = []
     for idx in range(len(data)):
         endIdx = len(data[idx])-end
-        newSentenceData = data[idx][:begin]+data[idx][endIdx:len(data[idx])]
+        if endIdx <= 0:
+            endIdx = int(len(data[idx])/2)
+            beginIdx = int(len(data[idx])/2)
+            newSentenceData = data[idx][:beginIdx]+data[idx][endIdx:len(data[idx])]
+        else:
+            newSentenceData = data[idx][:begin]+data[idx][endIdx:len(data[idx])]
         newData.append(newSentenceData)
     write_file(fileOUT+".txt",newData)
     return
@@ -112,9 +117,10 @@ def all_preprocessing_steps(fileIN):
     
     normalize_pitch(fileIN+"_interp",fileIN+"_normalized")
     normalize_pitch2(fileIN+"_interp",fileIN+"_normalized")
-    take_range(fileIN+"_normalized_pitch",fileIN+"_processed_pitch",0.5,0.5,0.01)
-    take_range(fileIN+"_normalized_semitones",fileIN+"_processed_semitones",0.5,0.5,0.01)
-    take_range(fileIN+"_time",fileIN+"_processed_time",0.5,0.5,0.01)
+    timeRange = 0.8
+    take_range(fileIN+"_normalized_pitch",fileIN+"_processed_pitch",timeRange,timeRange,0.01)
+    take_range(fileIN+"_normalized_semitones",fileIN+"_processed_semitones",timeRange,timeRange,0.01)
+    take_range(fileIN+"_time",fileIN+"_processed_time",timeRange,timeRange,0.01)
 
 def preprocessing_data():
     fileName = "data"
