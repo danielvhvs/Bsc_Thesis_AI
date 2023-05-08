@@ -25,9 +25,9 @@ def stats(fileName):
     return TQ, FQ, TS, FS
 
 def confusion_extract():
-    fileName = "./habrok_data/run13/cross_guessesM"
+    fileName = "./habrok_data/run12/cross_guessesM"
     data = []
-    for i in range(128):
+    for i in range(144):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -100,12 +100,12 @@ def comparison_bar_3d(data,different_graphs,species,attributes):
     thing = accuracy
     allData = thing.reshape(len(different_graphs),len(species),len(attributes))
 
-    fig, ax = plt.subplots(len(allData),1)
+    fig, ax = plt.subplots(len(allData),1,figsize=(20,20))
 
     for totalGraph in range(len(allData)):
         newThing = allData[totalGraph]
 
-        width = 0.15  # the width of the bars
+        width = 0.1  # the width of the bars
         multiplier = 0
 
         oldBar = newThing
@@ -131,7 +131,7 @@ def comparison_bar_3d(data,different_graphs,species,attributes):
         ax[totalGraph].set_xticks(x + width,species)
         ax[totalGraph].set_ylim(0, 1)
     ax[0].set_ylim(0,1.1)
-    ax[0].legend(loc="upper left",ncol=8)
+    ax[0].legend(loc="upper left",ncol=6)
     fig.tight_layout()
     plt.show()
     return

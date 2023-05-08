@@ -59,23 +59,23 @@ if __name__ == "__main__":
     # data = trd.confusion_extract()
     # trd.comparison_bar_3d(data,different,species,attributes)
         
-    # different = [2,2.4,2.8,3.2,3.6,4] #run 12
-    # species = [1,2,3,4]
-    # attributes = [0.26,0.28,0.3,0.32,0.34,0.36]
+    different = [2,2.4,2.8,3.2,3.6,4] #run 12
+    species = [1,2,3,4]
+    attributes = [0.26,0.28,0.3,0.32,0.34,0.36]
 
-    # data = trd.confusion_extract()
-    # trd.comparison_bar_3d(data,different,species,attributes)
+    data = trd.confusion_extract()
+    trd.comparison_bar_3d(data,different,species,attributes)
     
     # species = [2,2.5,3,3.5,4,4.5,5,5.5]
     # attributes = [(4,4)]
     # data = trd.confusion_extract()
     # trd.comparison_bar_1d(data,attributes,species)
     
-    different = [2.6,2.8,3,3.2]
-    species = [1,2,3,4]
-    attributes = [0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38]
-    data = trd.confusion_extract()
-    trd.comparison_bar_3d(data,different,species,attributes)
+    # different = [2.6,2.8,3,3.2] #run 13 and 14 - 0.2 and 0.8 seconds
+    # species = [1,2,3,4]
+    # attributes = [0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38]
+    # data = trd.confusion_extract()
+    # trd.comparison_bar_3d(data,different,species,attributes)
     
     # transform(2.4,True,(4,4),1,0.26)
     # training(2.4)
