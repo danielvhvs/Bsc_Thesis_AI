@@ -117,7 +117,7 @@ def all_preprocessing_steps(fileIN):
     
     normalize_pitch(fileIN+"_interp",fileIN+"_normalized")
     normalize_pitch2(fileIN+"_interp",fileIN+"_normalized")
-    timeRange = 0.8
+    timeRange = 0.5
     take_range(fileIN+"_normalized_pitch",fileIN+"_processed_pitch",timeRange,timeRange,0.01)
     take_range(fileIN+"_normalized_semitones",fileIN+"_processed_semitones",timeRange,timeRange,0.01)
     take_range(fileIN+"_time",fileIN+"_processed_time",timeRange,timeRange,0.01)

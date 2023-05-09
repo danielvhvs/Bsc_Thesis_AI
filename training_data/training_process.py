@@ -26,10 +26,11 @@ def training_validation_mix(randomNumber):
     df_test.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
     return randomNumber
 
-def set_hyper_parameters(eta,nruns,boundary_gradient,randomSeed,fileName,\
+def set_hyper_parameters(eta,nruns,boundary_gradient,randomSeed,fileName,length,flatLength,flatChange,\
     trainFile="../save_progress_training/training_cues.csv",testFile="../save_progress_training/validation_cues.csv",\
     probabilityFile="../save_progress_training/validation_guesses.csv",training_weights="../save_progresss_training/training_weights.csv"):
-    df = pd.DataFrame({"eta":[eta],"nruns":[nruns],"boundary_gradient":[boundary_gradient],"seed":[randomSeed],\
+    df = pd.DataFrame({"eta":[eta],"nruns":[nruns],"boundary_gradient":[boundary_gradient],"start_length":[length[0]],"end_length":[length[1]],\
+        "flat_length":[flatLength],"flat_change":[flatChange],"seed":[randomSeed],\
         "train_data":[trainFile],"test_data":[testFile],"probability_data":[probabilityFile],"training_weights":[training_weights]})
 
     df.to_csv(os.path.abspath(os.path.join(fileName)),index=False)

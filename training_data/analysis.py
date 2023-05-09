@@ -25,9 +25,9 @@ def stats(fileName):
     return TQ, FQ, TS, FS
 
 def confusion_extract():
-    fileName = "./habrok_data/run12/cross_guessesM"
+    fileName = "./habrok_data/run18/cross_guessesM"
     data = []
-    for i in range(144):
+    for i in range(128):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -74,6 +74,34 @@ def more_stats(data,species,attributes):
     # print(meanPrecS)
     
     return
+
+def middle(n):  
+    return n[1]
+
+def sort(list_of_tuples):  
+    return sorted(list_of_tuples, key = middle)  
+
+def cue_pattern_stats(fileName):
+    df = pd.read_csv(fileName)
+    df = df.rename(columns={"Unnamed: 0":"cue"})
+    questionCues = []
+    statementCues = []
+    for idx in range(len(df)):
+        if df["question"][idx] > 0:
+            questionCues.append((df["cue"][idx],round(df["question"][idx],3)))
+        else:
+            statementCues.append((df["cue"][idx],round(df["statement"][idx],3)))
+    questionCues = sort(questionCues)[::-1]
+    statementCues = sort(statementCues)[::-1]
+    
+    #print(df["Unnamed: 0"])
+    for idx in range(len(questionCues)):
+        print(f"{questionCues[idx][0]}\t{questionCues[idx][1]}")
+    print("\n")
+    for idx in range(len(statementCues)):
+        print(f"{statementCues[idx][0]}\t{statementCues[idx][1]}")
+    return
+    
         
 
 def comparison_bar_3d(data,different_graphs,species,attributes):
@@ -131,7 +159,7 @@ def comparison_bar_3d(data,different_graphs,species,attributes):
         ax[totalGraph].set_xticks(x + width,species)
         ax[totalGraph].set_ylim(0, 1)
     ax[0].set_ylim(0,1.1)
-    ax[0].legend(loc="upper left",ncol=6)
+    ax[0].legend(loc="upper left",ncol=8)
     fig.tight_layout()
     plt.show()
     return

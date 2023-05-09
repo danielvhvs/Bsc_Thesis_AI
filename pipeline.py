@@ -22,17 +22,17 @@ def transform(B,trueFlat,lengths=(2,2),flatLength=0,flatChange=0):
     print("transforming done")
     return
 
-def training(B):
+def training(B,length,flatLength=0,flatChange=0):
     nruns = 100
     eta = 0.01
-    randomSeed = trd.training_validation_mix()
+    randomSeed = trd.training_validation_mix(42)
     probabilityFile="save_progress_training/validation_guesses%s.csv"
     probabilityFile = tfd.next_path(os.path.abspath(os.path.join(probabilityFile)))
     training_weights="save_progress_training/training_weights%s.csv"
     training_weights = tfd.next_path(os.path.abspath(os.path.join(training_weights)))
     hyper_file="save_progress_training/hyper_parameters_R%s.csv"
     hyper_file = tfd.next_path(os.path.abspath(os.path.join(hyper_file)))
-    trd.set_hyper_parameters(eta,nruns,B,randomSeed,hyper_file,probabilityFile=probabilityFile,training_weights=training_weights)
+    trd.set_hyper_parameters(eta,nruns,B,randomSeed,hyper_file,length,flatLength,flatChange,probabilityFile=probabilityFile,training_weights=training_weights)
     trd.training_in_r()
     print("training done")
     return
@@ -46,6 +46,20 @@ def multiple_runs():
             trd.cross_validation(B,L,1)
             
 if __name__ == "__main__":
+    # L = (4,4)
+    # fL = 2
+    # fC = 0.3
+    # B = 2.8
+    # transform(B,True,L,fL,fC)
+    # training(B,L,fL,fC)
+    
+    trd.cue_pattern_stats("./save_progress_training/training_weights7.csv")
+    
+    # fileName = "data/pitch_data_statements_processed_pitch.txt"
+    # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))
+    
+    # tfd.plot_flat(pitch,2.8,N=0)
+    
     # species = [2,4,6,8,10,12]
     # attributes = [0.05,0.1,0.15,0.2,0.25,0.3]#run7
     # different = [1.6,1.9,2.2,2.5,2.8,3.1]
@@ -59,21 +73,27 @@ if __name__ == "__main__":
     # data = trd.confusion_extract()
     # trd.comparison_bar_3d(data,different,species,attributes)
         
-    different = [2,2.4,2.8,3.2,3.6,4] #run 12
-    species = [1,2,3,4]
-    attributes = [0.26,0.28,0.3,0.32,0.34,0.36]
+    # different = [2,2.4,2.8,3.2,3.6,4] #run 12
+    # species = [1,2,3,4]
+    # attributes = [0.26,0.28,0.3,0.32,0.34,0.36]
 
-    data = trd.confusion_extract()
-    trd.comparison_bar_3d(data,different,species,attributes)
+    # data = trd.confusion_extract()
+    # trd.comparison_bar_3d(data,different,species,attributes)
     
     # species = [2,2.5,3,3.5,4,4.5,5,5.5]
     # attributes = [(4,4)]
     # data = trd.confusion_extract()
     # trd.comparison_bar_1d(data,attributes,species)
     
-    # different = [2.6,2.8,3,3.2] #run 13 and 14 - 0.2 and 0.8 seconds
+    # different = [2.6,2.8,3,3.2] #run 13 and 14 - 0.2 and 0.8 seconds # run15 0.8 seconds (5,5) length
     # species = [1,2,3,4]
     # attributes = [0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38]
+    # data = trd.confusion_extract()
+    # trd.comparison_bar_3d(data,different,species,attributes)[(4,4),(0,4),(4,0),(3,3),(2,2),(1,1),(0,3),(0,2)]
+    
+    # different = [2.6,2.8,3,3.2] #run 18
+    # species = [1,2,3,4]
+    # attributes = [(4,4),(0,4),(4,0),(3,3),(2,2),(1,1),(0,3),(0,2)]
     # data = trd.confusion_extract()
     # trd.comparison_bar_3d(data,different,species,attributes)
     

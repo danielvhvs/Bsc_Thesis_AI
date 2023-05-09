@@ -19,14 +19,12 @@ def word_to_letter(abstract):
 def make_abstract(allData,boundary,flatOrNot,doChange,flatLength,flatChange):
     halfway = int(len(allData[0])/2)
     time = np.arange(len(allData[0]))/len(allData[0])
-    print(len(allData[0]))
     beginAbstract = []
     endAbstract = []
     for idx,data in enumerate(allData):
         halfway = int(len(data)/2)
         time = np.arange(len(data))/len(data)
         if flatOrNot:
-            print(len(data),halfway,idx)
             change1 = determine_flat_areas(data[:halfway],time[:halfway],boundary)
             change2 = determine_flat_areas(data[halfway:len(data)],time[halfway:len(data)],boundary)
             abstract1 = word_to_letter(flat_areas(change1,flatLength,flatChange))
