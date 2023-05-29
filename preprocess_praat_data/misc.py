@@ -12,8 +12,8 @@ def delete_dir_content(folder):
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-def write_file(fileIN,data):
-    with open("./data/"+fileIN,"w") as file:
+def write_file(fileIN,data,dataFolder):
+    with open("./"+dataFolder+"/"+fileIN,"w") as file:
         for line in data:
             for wordIdx,word in enumerate(line):
                 file.write(word)
@@ -23,10 +23,10 @@ def write_file(fileIN,data):
     file.close()
     return
         
-def read_file_double(fileIN,fileOUT):
+def read_file_double(fileIN,fileOUT,dataFolder):
     data = []
     time = []
-    with open("./data/"+fileIN,"r") as file:
+    with open("./"+dataFolder+"/"+fileIN,"r") as file:
         for line in file:
             split = line.split()
             sound = []
@@ -37,13 +37,13 @@ def read_file_double(fileIN,fileOUT):
             data.append(sound)
             time.append(soundTime)
     file.close()
-    write_file(fileOUT+"_time.txt",time)
-    write_file(fileOUT+"_pitch.txt",data)
+    write_file(fileOUT+"_time.txt",time,dataFolder)
+    write_file(fileOUT+"_pitch.txt",data,dataFolder)
     return
 
-def read_file(fileIN):
+def read_file(fileIN,dataFolder):
     data = []
-    with open("./data/"+fileIN,"r") as file:
+    with open("./"+dataFolder+"/"+fileIN,"r") as file:
         for line in file:
             split = line.split()
             data.append(split)

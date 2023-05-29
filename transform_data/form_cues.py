@@ -72,22 +72,22 @@ def make_cue_frame(cueSets,question):
     df["Outcomes"] = [question for _ in range(len(cueSets))]
     return df
 
-def generate_cue_file(B,trueFlat,lengths=2,doChange=2,flatLength=0,flatChange=0):
+def generate_cue_file(B,trueFlat,lengths=2,doChange=2,flatLength=0,flatChange=0,data="data"):
     if isinstance(lengths,int):
         endLen = lengths
         begLen = lengths
     else:
         endLen = lengths[1]
         begLen = lengths[0]
-    fileName = "data/pitch_data_questions_processed_pitch.txt"
+    fileName = data+"/pitch_data_questions_processed_pitch.txt"
     pitch = read_file2(os.path.abspath(os.path.join(fileName)))
     dfq = make_cue_frame(make_cue_sets(pitch,B,begLen,endLen,trueFlat,doChange,flatLength,flatChange),"question")
     
-    fileName = "data/pitch_data_statements_processed_pitch.txt"
+    fileName = data+"/pitch_data_statements_processed_pitch.txt"
     pitch = read_file2(os.path.abspath(os.path.join(fileName)))
     dfs = make_cue_frame(make_cue_sets(pitch,B,begLen,endLen,trueFlat,doChange,flatLength,flatChange),"statement")
     df = pd.concat([dfq,dfs])
     
-    fileName = "data/input_cues.csv"
+    fileName = data+"/input_cues.csv"
     df.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
     return         

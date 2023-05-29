@@ -5,15 +5,15 @@ from sklearn.model_selection import train_test_split
 """
 rearange in question and statements for train data
 """
-def rearange_files(fileName,dirName):
-    if not os.path.exists("./statement_sentences_train"):
-        os.makedirs("./statement_sentences_train")
+def rearange_files(fileName,dirName,typeFile):
+    if not os.path.exists("./statement_sentences_"+typeFile):
+        os.makedirs("./statement_sentences_"+typeFile)
     else:
-        delete_dir_content("./statement_sentences_train")
-    if not os.path.exists("./question_sentences_train"):
-        os.makedirs("./question_sentences_train")
+        delete_dir_content("./statement_sentences_"+typeFile)
+    if not os.path.exists("./question_sentences_"+typeFile):
+        os.makedirs("./question_sentences_"+typeFile)
     else:
-        delete_dir_content("./question_sentences_train")
+        delete_dir_content("./question_sentences_"+typeFile)
     questions = []
     statements = []
     with open(fileName,"r") as file_read:
@@ -21,20 +21,20 @@ def rearange_files(fileName,dirName):
             split = line.split("\t")
             if split[1][0]=="¿":
                 questions.append(split)
-                desination = "./question_sentences_train/"
+                desination = "./question_sentences_"+typeFile+"/"
             else:
                 statements.append(split)
-                desination = "./statement_sentences_train/"
+                desination = "./statement_sentences_"+typeFile+"/"
             src_path = dirName+split[0]+".wav"
             dst_path = desination+split[0]+".wav"
             shutil.copy(src_path,dst_path)
     file_read.close()
     print(len(questions),len(statements))
-    with open("line_index_questions_train.txt","w") as file_write_q:
+    with open("line_index_questions_"+typeFile+".txt","w") as file_write_q:
         for q in questions:
             file_write_q.write(q[0]+"\t"+q[1])
     file_write_q.close()
-    with open("line_index_statements_train.txt","w") as file_write_s:
+    with open("line_index_statements_"+typeFile+".txt","w") as file_write_s:
         for s in statements:
             file_write_s.write(s[0]+"\t"+s[1])
     file_write_s.close()

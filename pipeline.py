@@ -7,32 +7,38 @@ import time
 import pandas as pd
 
 def organise_files():
-    organise.rearange_all()
+    # organise.rearange_all()
+    organise.rearange_files("line_index_test.txt","./test_sentences/","test")
     print("organising files done")
     return
 
 def preprocessing():
     # ppd.run_all_praat()
-    ppd.preprocessing_data()
+    ppd.preprocessing_data(dataFolder="data")
     print("preprocessing done")
     return
 
-def transform(B,trueFlat,lengths=(2,2),flatLength=0,flatChange=0):
-    tfd.generate_cue_file(B,trueFlat,lengths=lengths,flatLength=flatLength,flatChange=flatChange)
+def transform(B,trueFlat,lengths=(2,2),flatLength=0,flatChange=0,data="data"):
+    tfd.generate_cue_file(B,trueFlat,lengths=lengths,flatLength=flatLength,flatChange=flatChange,data=data)
     print("transforming done")
     return
 
 def training(B,length,flatLength=0,flatChange=0):
     nruns = 100
     eta = 0.01
-    randomSeed = trd.training_validation_mix(42)
+    # randomSeed = trd.training_validation_mix(42,False)
+    randomSeed = 42
     probabilityFile="save_progress_training/validation_guesses%s.csv"
     probabilityFile = tfd.next_path(os.path.abspath(os.path.join(probabilityFile)))
     training_weights="save_progress_training/training_weights%s.csv"
     training_weights = tfd.next_path(os.path.abspath(os.path.join(training_weights)))
     hyper_file="save_progress_training/hyper_parameters_R%s.csv"
     hyper_file = tfd.next_path(os.path.abspath(os.path.join(hyper_file)))
-    trd.set_hyper_parameters(eta,nruns,B,randomSeed,hyper_file,length,flatLength,flatChange,probabilityFile=probabilityFile,training_weights=training_weights)
+    
+    trainFile = "../cuesets/training_cues_flat.csv"
+    testFile = "../cuesets/validation_cues_flat.csv"
+    trd.set_hyper_parameters(eta,nruns,B,randomSeed,hyper_file,length,flatLength,flatChange,probabilityFile=probabilityFile,\
+        training_weights=training_weights,trainFile=trainFile,testFile=testFile)
     trd.training_in_r()
     print("training done")
     return
@@ -46,14 +52,21 @@ def multiple_runs():
             trd.cross_validation(B,L,1)
             
 if __name__ == "__main__":
-    # L = (4,4)
-    # fL = 2
-    # fC = 0.3
-    # B = 2.8
-    # transform(B,True,L,fL,fC)
+    L = (4,4)
+    fL = 2
+    fC = 0.3
+    B = 2.8
+    # # preprocessing()
+    # transform(B,True,L,fL,fC,"data")
+    # transform(B,True,L,fL,fC,"data_train")
+    
+    # randomSeed = trd.training_validation_mix(42,False)
+    
     # training(B,L,fL,fC)
     
-    trd.cue_pattern_stats("./save_progress_training/training_weights7.csv")
+    trd.cue_distribution2("./cuesets/training_cues_normal.csv")
+    # trd.stats("./save_progress_training/validation_guesses8.csv")
+    # trd.cue_pattern_stats("./save_progress_training/training_weights7.csv")
     
     # fileName = "data/pitch_data_statements_processed_pitch.txt"
     # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))
@@ -80,16 +93,16 @@ if __name__ == "__main__":
     # data = trd.confusion_extract()
     # trd.comparison_bar_3d(data,different,species,attributes)
     
-    # species = [2,2.5,3,3.5,4,4.5,5,5.5]
-    # attributes = [(4,4)]
+    # species = [2.4,2.8,3.2,3.6,4,4.4,4.8,5.2]
+    # attributes = [(4,4),(0,4),(4,0)]
     # data = trd.confusion_extract()
-    # trd.comparison_bar_1d(data,attributes,species)
+    # trd.comparison_bar(data,species,attributes)
     
     # different = [2.6,2.8,3,3.2] #run 13 and 14 - 0.2 and 0.8 seconds # run15 0.8 seconds (5,5) length
     # species = [1,2,3,4]
     # attributes = [0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38]
     # data = trd.confusion_extract()
-    # trd.comparison_bar_3d(data,different,species,attributes)[(4,4),(0,4),(4,0),(3,3),(2,2),(1,1),(0,3),(0,2)]
+    # trd.comparison_bar_3d(data,different,species,attributes)
     
     # different = [2.6,2.8,3,3.2] #run 18
     # species = [1,2,3,4]

@@ -7,15 +7,31 @@ import numpy as np
 from imblearn.over_sampling import RandomOverSampler, SMOTE
 from .analysis import *
 
-def training_validation_mix(randomNumber):
+def training_validation_mix(randomNumber,splitIt=True):
     df = pd.read_csv("./data/input_cues.csv")
     randomN = random.randint(1,10000)
-    x_train, x_test, y_train, y_test = train_test_split(df["Cues"], df["Outcomes"], test_size=0.2,random_state=randomNumber)
-    x_train = np.array(x_train).reshape(-1,1)
+    if splitIt:
+        x_train, x_test, y_train, y_test = train_test_split(df["Cues"], df["Outcomes"], test_size=0.2,random_state=randomNumber)
+    else:
+        df2 = pd.read_csv("./data_train/input_cues.csv")
+        x_train = df["Cues"]
+        y_train = df["Outcomes"]
+        x_test = df2["Cues"]
+        y_test = df2["Outcomes"]
     # Randomly over sample the minority class
     ros = RandomOverSampler(random_state=42)
+    
+    x_train = np.array(x_train).reshape(-1,1)
     x_train, y_train= ros.fit_resample(x_train, y_train)
     x_train = x_train.flatten()
+    
+    ros = RandomOverSampler(random_state=0)
+    
+    x_test = np.array(x_test).reshape(-1,1)
+    x_test, y_test= ros.fit_resample(x_test, y_test)
+    x_test = x_test.flatten()
+    
+    
     df_train = pd.DataFrame({"Cues":x_train,"Outcomes":y_train})
     df_test = pd.DataFrame({"Cues":x_test,"Outcomes":y_test})
     

@@ -1,2 +1,0 @@
-eta,nruns,boundary_gradient,start_length,end_length,flat_length,flat_change,seed,train_data,test_data,probability_data,training_weights
-0.01,100,2.8,4,4,2,0.3,42,../save_progress_training/training_cues.csv,../save_progress_training/validation_cues.csv,/home/daniel/ai_thesis/Bsc_Thesis_AI/save_progress_training/validation_guesses7.csv,/home/daniel/ai_thesis/Bsc_Thesis_AI/save_progress_training/training_weights7.csv
