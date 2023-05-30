@@ -21,8 +21,8 @@ def plot_smooth(data,boundary):
     halfway = int(len(data)/2)
     time = np.arange(len(data))/len(data)
     
-    smoothL = determine_smooth_gradient_change(data[:halfway],time[:halfway],boundary)
-    smoothR = determine_smooth_gradient_change(data[halfway:len(data)],time[halfway:len(data)],boundary)
+    smoothL = determine_smooth_gradient_data(data[:halfway],time[:halfway],boundary)
+    smoothR = determine_smooth_gradient_data(data[halfway:len(data)],time[halfway:len(data)],boundary)
     
     fig = plt.figure()
     frame = fig.add_subplot(2,1,2)
@@ -55,6 +55,8 @@ def plot_flat(allData,boundary,N=0):
     size = 3
     frame.scatter(range(len(flatL)),flatL,s=size)
     frame.scatter(range(len(flatL),len(flatL)+len(flatR)),flatR,s=size)
+    frame.set_xlabel("time (ms)")
+    frame.set_ylabel("frequency (log Hz)")
     plt.show()
     return
 

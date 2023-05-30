@@ -26,9 +26,9 @@ def stats(fileName):
     return TQ, FQ, TS, FS
 
 def confusion_extract():
-    fileName = "./habrok_data/run4/cross_guessesM"
+    fileName = "./habrok_data/run19/cross_guessesM"
     data = []
-    for i in range(24):
+    for i in range(216):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -127,8 +127,10 @@ def cue_distribution2(fileName):
 
     df2 = pd.DataFrame({"cue S":[i[0] for i in listS],"count S":[i[1] for i in listS],"cue Q":[i[0] for i in listQ],"count Q":[i[1] for i in listQ]})
     print(df2)
-    # for idx in range(len(listS)):
-    #     print(f"{listQ[idx][0]}\t{listQ[idx][1]}\t{listS[idx][0]}\t{listS[idx][1]}")
+    
+    fileName = "./cuesets/distribution_training_flat.csv"
+    df2.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
+
 
 def middle(n):  
     return n[1]

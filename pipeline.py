@@ -64,7 +64,7 @@ if __name__ == "__main__":
     
     # training(B,L,fL,fC)
     
-    trd.cue_distribution2("./cuesets/training_cues_normal.csv")
+    # trd.cue_distribution2("./cuesets/training_cues_flat.csv")
     # trd.stats("./save_progress_training/validation_guesses8.csv")
     # trd.cue_pattern_stats("./save_progress_training/training_weights7.csv")
     
@@ -73,11 +73,11 @@ if __name__ == "__main__":
     
     # tfd.plot_flat(pitch,2.8,N=0)
     
-    # species = [2,4,6,8,10,12]
-    # attributes = [0.05,0.1,0.15,0.2,0.25,0.3]#run7
-    # different = [1.6,1.9,2.2,2.5,2.8,3.1]
-    # data = trd.confusion_extract()
-    # trd.comparison_bar_3d(data,different,species,attributes)
+    species = [2,4,6,8,10,12]
+    attributes = [0.05,0.1,0.15,0.2,0.25,0.3]#run7
+    different = [1.6,1.9,2.2,2.5,2.8,3.1]
+    data = trd.confusion_extract()
+    trd.comparison_bar_3d(data,different,species,attributes)
 
     # species = [6,8,10,12,14,16] #run 9
     # attributes = [0,0.02,0.04,0.05,0.06,0.08]
@@ -113,5 +113,7 @@ if __name__ == "__main__":
     # transform(2.4,True,(4,4),1,0.26)
     # training(2.4)
     # preprocessing()
-
+    # fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
+    # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))
+    # tfd.plot_flat(pitch,2.4,N=1)
     pass
