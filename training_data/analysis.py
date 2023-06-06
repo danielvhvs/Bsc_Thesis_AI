@@ -19,15 +19,16 @@ def stats(fileName):
                 TS += 1
             else:
                 FS += 1
-    print(TQ/(TQ+FQ+TS+FS))
-    print(FQ/(TQ+FQ+TS+FS))
-    print(TS/(TQ+FQ+TS+FS))
-    print(FS/(TQ+FQ+TS+FS))
+    # print(TQ/(TQ+FQ+TS+FS))
+    # print(FQ/(TQ+FQ+TS+FS))
+    # print(TS/(TQ+FQ+TS+FS))
+    # print(FS/(TQ+FQ+TS+FS))
     return TQ, FQ, TS, FS
 
-def confusion_extract(N=215,fileName = "./habrok_data/run20/cross_guessesM"):
+def confusion_extract():
+    fileName = "./habrok_data/run19/cross_guessesM"
     data = []
-    for i in range(N):
+    for i in range(216):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -51,6 +52,31 @@ def confusion_extract2():
         data.append((TQ,FQ,TS,FS))
     return data
 
+def more_stats1(data):
+    a,b,c,d = stats(data)
+    x = (a,b,c,d)
+    accuracy = (x[0]+x[2])/sum(x)
+    precisionQuestions = (x[0])/(x[0]+x[1])
+    precisionStatements = (x[2])/(x[2]+x[3])
+    
+    recallQuestions = (x[0])/(x[0]+x[3])
+    recallStatements = (x[2])/(x[1]+x[2])
+    
+    F1Q = 1/((1/precisionQuestions+1/recallQuestions)/2)
+    F1S = 1/((1/precisionStatements+1/recallStatements)/2)
+    
+    # print(accuracy)
+    # print(recallQuestions)
+    # print(recallStatements)
+    # print(precisionQuestions)
+    # print(precisionStatements)
+
+    # print(F1Q,F1S)
+
+    print("accuracy: {:.3f}\nrecall Q and S:\n{:.3f}\t{:.3f}\n\
+precision Q and S:\n{:.3f}\t{:.3f}\nF1 Question: {:.3f}\n\
+F1 Statements: {:.3f}".format(accuracy,recallQuestions,recallStatements,precisionQuestions,precisionStatements,F1Q,F1S))
+
 def more_stats(data,species,attributes):
     accuracy = np.array([(x[0]+x[2])/sum(x) for x in data]).reshape(len(species),len(attributes))
     precisionQuestions = np.array([(x[0])/(x[0]+x[1]) for x in data]).reshape(len(species),len(attributes))
@@ -67,11 +93,12 @@ def more_stats(data,species,attributes):
     meanRecallS = [sum(L)/len(L) for L in precisionStatements]
     meanPrecQ = [sum(L)/len(L) for L in recallQuestions]
     meanPrecS = [sum(L)/len(L) for L in recallStatements]
-    # print(meanAcc)
-    # print(meanRecallQ)
-    # print(meanRecallS)
-    # print(meanPrecQ)
-    # print(meanPrecS)
+
+    print(meanAcc)
+    print(meanRecallQ)
+    print(meanRecallS)
+    print(meanPrecQ)
+    print(meanPrecS)
     
     return
 
@@ -92,8 +119,7 @@ def cue_distribution(fileName):
                 statement +=1
             else:
                 noS += 1
-    print(question,noQ)
-    print(statement,noS)
+    print("Q only bg: {}\nQ other: {}\nS only bg: {}\nS other: {}".format(question,noQ,statement,noS))
     return
 
 def ending(n):  
@@ -151,9 +177,10 @@ def cue_pattern_stats(fileName):
     statementCues = sort(statementCues)[::-1]
     
     #print(df["Unnamed: 0"])
+    print("questions:")
     for idx in range(len(questionCues)):
         print(f"{questionCues[idx][0]}\t{questionCues[idx][1]}")
-    print("\n")
+    print("\nstatements:")
     for idx in range(len(statementCues)):
         print(f"{statementCues[idx][0]}\t{statementCues[idx][1]}")
     return
