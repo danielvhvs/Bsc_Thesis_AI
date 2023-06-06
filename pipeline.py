@@ -26,7 +26,7 @@ def transform(B,trueFlat,lengths=(2,2),flatLength=0,flatChange=0,data="data"):
 def training(B,length,flatLength=0,flatChange=0):
     nruns = 100
     eta = 0.01
-    randomSeed = trd.training_validation_mix(42,False)
+    # randomSeed = trd.training_validation_mix(42,False)
     randomSeed = 42
     probabilityFile="save_progress_training/validation_guesses%s.csv"
     probabilityFile = tfd.next_path(os.path.abspath(os.path.join(probabilityFile)))
@@ -35,10 +35,10 @@ def training(B,length,flatLength=0,flatChange=0):
     hyper_file="save_progress_training/hyper_parameters_R%s.csv"
     hyper_file = tfd.next_path(os.path.abspath(os.path.join(hyper_file)))
     
-    # trainFile = "../cuesets/training_cues_flat.csv"
-    # testFile = "../cuesets/validation_cues_flat.csv"
+    trainFile = "../cuesets/training_cues_flat.csv"
+    testFile = "../cuesets/validation_cues_flat.csv"
     trd.set_hyper_parameters(eta,nruns,B,randomSeed,hyper_file,length,flatLength,flatChange,probabilityFile=probabilityFile,\
-        training_weights=training_weights)
+        training_weights=training_weights,trainFile=trainFile,testFile=testFile)
     trd.training_in_r()
     print("training done")
     return
@@ -53,8 +53,8 @@ def multiple_runs():
             
 if __name__ == "__main__":
     L = (4,4)
-    fL = 2
-    fC = 0.3
+    fL = 1
+    fC = 0.16
     B = 2.8
     # # preprocessing()
     # transform(B,True,L,fL,fC,"data")
@@ -64,9 +64,10 @@ if __name__ == "__main__":
     
     # training(B,L,fL,fC)
     
-    # trd.cue_distribution2("./cuesets/training_cues_flat.csv")
-    # trd.stats("./save_progress_training/validation_guesses8.csv")
-    # trd.cue_pattern_stats("./save_progress_training/training_weights7.csv")
+    
+    # trd.cue_distribution3("./cuesets/training_cues_flat.csv")
+    # trd.more_stats1("./cuesets/validation_guesses_flat.csv")
+    trd.cue_pattern_stats("./cuesets/training_weights_flat.csv")
     
     # fileName = "data/pitch_data_statements_processed_pitch.txt"
     # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))
@@ -128,6 +129,13 @@ if __name__ == "__main__":
     # species = [1,2,3,4]
     # attributes = [0.02,0.04,0.06,0.08,0.1,0.12,0.14,0.16]
     # data = trd.confusion_extract(128,"./habrok_data/run24/cross_guessesM")
+    # trd.comparison_bar_3d(data,different,species,attributes)   
+    
+    # run 27 - new flat - specific
+    # different = [2.2,2.4,2.6,2.8,3,3.2]
+    # species = [1,2,3]
+    # attributes = [0.08,0.1,0.12,0.14,0.16,0.18,0.2,0.22]
+    # data = trd.confusion_extract(144,"./habrok_data/run27/cross_guessesM")
     # trd.comparison_bar_3d(data,different,species,attributes)    
 
     # transform(2.8,True,(4,4),2,0.3)
@@ -138,6 +146,15 @@ if __name__ == "__main__":
     # attributes = [(4,4),(4,0),(0,4),(3,3),(2,2),(1,1)]
     # data = trd.confusion_extract(78,"./habrok_data/run26/cross_guessesM")
     # trd.comparison_bar(data,species,attributes)
+
+    # species = [2.6,2.8]
+    # attributes = [(4,4),(4,0),(0,4),(3,3),(2,2),(1,1)]
+    # y = 1
+    # x = range(len(attributes)*y,len(attributes)*(y+1))
+    # for i in x:
+    #     print(i)
+    # print(x)
+    # trd.single_bar(attributes,x,"./habrok_data/run28/cross_guessesM")
     
     
     # preprocessing()

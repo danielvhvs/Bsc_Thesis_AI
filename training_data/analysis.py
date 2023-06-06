@@ -25,10 +25,9 @@ def stats(fileName):
     # print(FS/(TQ+FQ+TS+FS))
     return TQ, FQ, TS, FS
 
-def confusion_extract():
-    fileName = "./habrok_data/run19/cross_guessesM"
+def confusion_extract(N=78,fileName="./habrok_data/run26/cross_guessesM"):
     data = []
-    for i in range(216):
+    for i in range(N):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
@@ -110,12 +109,12 @@ def cue_distribution(fileName):
     noS = 0
     for idx in range(len(df)):
         if df["Outcomes"][idx]=="question":
-            if df["Cues"][idx]=="bg":
+            if df["Cues"][idx]=="bg_empty":
                 question +=1
             else:
                 noQ += 1
         else:
-            if df["Cues"][idx]=="bg":
+            if df["Cues"][idx]=="bg_empty":
                 statement +=1
             else:
                 noS += 1
@@ -135,7 +134,7 @@ def cue_distribution2(fileName):
 
     x = list(itertools.chain.from_iterable([list(itertools.product('HL',repeat=i)) for i in range(1,5)]))
     y = ["".join(i) for i in x]
-    z = [i+"#" for i in y] + ["#"+i for i in y]+["bg"]
+    z = [i+"#" for i in y] + ["#"+i for i in y]+["bg","empty"]
     for i in z:
         cueSetQ[i] = 0
         cueSetS[i] = 0
@@ -153,7 +152,32 @@ def cue_distribution2(fileName):
     df2 = pd.DataFrame({"cue S":[i[0] for i in listS],"count S":[i[1] for i in listS],"cue Q":[i[0] for i in listQ],"count Q":[i[1] for i in listQ]})
     print(df2)
     
-    fileName = "./cuesets/distribution_training_flat.csv"
+    fileName = "./cuesets/distribution_training_normal.csv"
+    df2.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
+    
+def cue_distribution3(fileName):
+    df = pd.read_csv(fileName)
+    cueSet = {}
+
+    x = list(itertools.chain.from_iterable([list(itertools.product('HL',repeat=i)) for i in range(1,5)]))
+    y = ["".join(i) for i in x]
+    z = [i+"#" for i in y] + ["#"+i for i in y]+["bg","empty"]
+    for i in z:
+        cueSet[i] = [0,0]
+    for idx in range(len(df)):
+        cues = df["Cues"][idx].split("_")
+        # print(cues)
+        for idx2 in range(len(cues)):
+            if df["Outcomes"][idx]=="question":
+                cueSet[cues[idx2]][1] += 1
+            else:
+                cueSet[cues[idx2]][0] += 1
+    listSet = sort2([(k, v[0],v[1]) for k, v in cueSet.items()])[::-1]
+
+    df2 = pd.DataFrame({"cue":[i[0] for i in listSet],"count S":[i[1] for i in listSet],"count Q":[i[2] for i in listSet]})
+    print(df2)
+    
+    fileName = "./cuesets/distribution2_training_flat.csv"
     df2.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
 
 

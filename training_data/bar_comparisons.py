@@ -188,6 +188,34 @@ def comparison_bar_2d(data,different_graphs,species,attributes):
     plt.show()
     return
 
+def single_bar(species,N=range(10),fileName="./habrok_data/run26/cross_guessesM"):
+    data = []
+    for i in N:
+        fileN = fileName + str(i) + ".csv"
+        df = pd.read_csv(fileN)
+        total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
+        TQ = sum(df["TQ"])/total
+        FQ = sum(df["FQ"])/total
+        TS = sum(df["TS"])/total
+        FS = sum(df["FS"])/total
+        data.append((TQ,FQ,TS,FS))
+
+    accuracy = np.round(np.array([(x[0]+x[2])/sum(x) for x in data]),2)
+    fig = plt.figure()
+    frame = fig.add_subplot(1,1,1)
+    width = 0.8
+    thing  = accuracy
+    x = range(len(thing))
+    rects = frame.bar(x,thing,width)
+    frame.bar_label(rects,padding=3)
+    frame.set_xticks(x,species)
+    frame.set_ylim(0,1)
+    
+    frame.set_ylabel("accuracy")
+    frame.set_xlabel("start and end length")
+    plt.show()
+    return
+
 def comparison_bar_1d(data,species,attributes):
     accuracy = np.round(np.array([(x[0]+x[2])/sum(x) for x in data]),2)
 
