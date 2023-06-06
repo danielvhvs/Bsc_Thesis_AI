@@ -26,7 +26,7 @@ def transform(B,trueFlat,lengths=(2,2),flatLength=0,flatChange=0,data="data"):
 def training(B,length,flatLength=0,flatChange=0):
     nruns = 100
     eta = 0.01
-    # randomSeed = trd.training_validation_mix(42,False)
+    randomSeed = trd.training_validation_mix(42,False)
     randomSeed = 42
     probabilityFile="save_progress_training/validation_guesses%s.csv"
     probabilityFile = tfd.next_path(os.path.abspath(os.path.join(probabilityFile)))
@@ -35,10 +35,10 @@ def training(B,length,flatLength=0,flatChange=0):
     hyper_file="save_progress_training/hyper_parameters_R%s.csv"
     hyper_file = tfd.next_path(os.path.abspath(os.path.join(hyper_file)))
     
-    trainFile = "../cuesets/training_cues_flat.csv"
-    testFile = "../cuesets/validation_cues_flat.csv"
+    # trainFile = "../cuesets/training_cues_flat.csv"
+    # testFile = "../cuesets/validation_cues_flat.csv"
     trd.set_hyper_parameters(eta,nruns,B,randomSeed,hyper_file,length,flatLength,flatChange,probabilityFile=probabilityFile,\
-        training_weights=training_weights,trainFile=trainFile,testFile=testFile)
+        training_weights=training_weights)
     trd.training_in_r()
     print("training done")
     return
@@ -73,11 +73,11 @@ if __name__ == "__main__":
     
     # tfd.plot_flat(pitch,2.8,N=0)
     
-    species = [2,4,6,8,10,12]
-    attributes = [0.05,0.1,0.15,0.2,0.25,0.3]#run7
-    different = [1.6,1.9,2.2,2.5,2.8,3.1]
-    data = trd.confusion_extract()
-    trd.comparison_bar_3d(data,different,species,attributes)
+    # species = [2,4,6,8,10,12]
+    # attributes = [0.05,0.1,0.15,0.2,0.25,0.3]#run7
+    # different = [1.6,1.9,2.2,2.5,2.8,3.1]
+    # data = trd.confusion_extract()
+    # trd.comparison_bar_3d(data,different,species,attributes)
 
     # species = [6,8,10,12,14,16] #run 9
     # attributes = [0,0.02,0.04,0.05,0.06,0.08]
@@ -110,10 +110,43 @@ if __name__ == "__main__":
     # data = trd.confusion_extract()
     # trd.comparison_bar_3d(data,different,species,attributes)
     
-    # transform(2.4,True,(4,4),1,0.26)
-    # training(2.4)
+    #run 20 - normal run but with normalising
+    # species = [2,2.4,2.8,3.2,3.6,4,4.4,4.8,5.2]
+    # attributes = [(4,4),(4,0),(0,4),(5,5),(3,3),(2,2),(1,1)]
+    # data = trd.confusion_extract(63,"./habrok_data/run20/cross_guessesM")
+    # trd.comparison_bar(data,species,attributes)
+    
+    # run 21 - flat old run but with normalising # run22 flat new with normalising # run23 flat old without normalising #run 25 flat new not normalised
+    # species = [2,4,6,8,10,12]
+    # attributes = [0.05,0.1,0.15,0.2,0.25,0.3]
+    # different = [1.6,1.9,2.2,2.5,2.8,3.1]
+    # data = trd.confusion_extract(216,"./habrok_data/run22/cross_guessesM")
+    # trd.comparison_bar_3d(data,different,species,attributes)
+    
+    # run 24 - old flat - specific
+    # different = [2.5,2.7,2.9,3.1]
+    # species = [1,2,3,4]
+    # attributes = [0.02,0.04,0.06,0.08,0.1,0.12,0.14,0.16]
+    # data = trd.confusion_extract(128,"./habrok_data/run24/cross_guessesM")
+    # trd.comparison_bar_3d(data,different,species,attributes)    
+
+    # transform(2.8,True,(4,4),2,0.3)
+    # training(2.8,(4,4),2,0.3)
+    
+    #run 26 normal specific
+    # species = [2.4,2.6,2.8,3,3.2,3.4,3.6,3.8,4,4.2,4.4,4.6,4.8]
+    # attributes = [(4,4),(4,0),(0,4),(3,3),(2,2),(1,1)]
+    # data = trd.confusion_extract(78,"./habrok_data/run26/cross_guessesM")
+    # trd.comparison_bar(data,species,attributes)
+    
+    
     # preprocessing()
     # fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
-    # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))
-    # tfd.plot_flat(pitch,2.4,N=1)
+    # fileName2 = "data"+"/pitch_data_questions_pitch.txt"
+    # fileName3 = "data"+"/pitch_data_questions_time.txt"
+    # N = 1
+    # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)),True)[N]
+    # pitch2 = tfd.read_file2(os.path.abspath(os.path.join(fileName2)),True)[N]
+    # time2 = tfd.read_file2(os.path.abspath(os.path.join(fileName3)),True)[N]
+    # tfd.test_single_plot(pitch,pitch2,time2)
     pass

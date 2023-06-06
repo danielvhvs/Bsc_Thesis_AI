@@ -3,17 +3,32 @@ from matplotlib import pyplot as plt
 from .abstracting_gradient import *
 from .determine_gradient import *
 
-def test_single_plot(time,data,frame):
-    halfway = int(len(data)/2)    
-    fig,frame = plt.subplots(1,1)
+def test_single_plot(data,data2,time2):
+    halfway = int(len(data)/2) 
+    print(len(data),len(data2))
+    time = np.arange(len(data))/len(data)
+    fig = plt.figure()
+    frame2 = fig.add_subplot(2,1,1)
+    frame = fig.add_subplot(2,1,2)
     psize = 2
     # frame.scatter(time,data,s=psize)
-    frame.plot(time[:halfway],data[:halfway])
-    frame.plot(time[halfway:len(data)],data[halfway:len(data)])
+    # frame.scatter(time[:halfway],data[:halfway],s=psize)
+    # frame.scatter(time[halfway:len(data)],data[halfway:len(data)],s=psize)
+    
+    frame.plot(time[:halfway],data[:halfway],label="first 0.5 (s)")
+    frame.plot(time[halfway:len(data)],data[halfway:len(data)],label="last 0.5 (s)")
     
     frame.set_xlabel("time (s)")
-    frame.set_ylabel("normalized pitch (Hz)")
+    frame.set_ylabel("pitch (Hz)")
+    frame.set_title("pitch after interpolation")
+    frame.legend()
+    frame2.plot(time2,data2)
     
+    frame2.set_xlabel("time (s)")
+    frame2.set_ylabel("pitch (Hz)")
+    frame2.set_title("pitch from praat")
+    
+    fig.tight_layout()
     plt.show()
     return
 

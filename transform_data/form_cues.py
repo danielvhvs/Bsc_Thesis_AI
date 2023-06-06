@@ -66,6 +66,8 @@ def make_cue_frame(cueSets,question):
     newCues = []
     for idx,cues in enumerate(cueSets):
         cue = "_".join(cues)
+        if cue == "bg":
+            cue += "_empty"
         newCues.append(cue)
         
     df = pd.DataFrame({"Cues":newCues})

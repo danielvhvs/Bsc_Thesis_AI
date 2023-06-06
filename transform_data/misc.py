@@ -1,14 +1,17 @@
 import numpy as np
 import os
 
-def read_file2(fileIN):
+def read_file2(fileIN,undefinedToken=False):
     data = []
     with open(fileIN,"r") as file:
         for line in file:
             split = line.split()
             sentence = []
             for word in split:
-                sentence.append(float(word))
+                if word == "--undefined--" and undefinedToken:
+                    sentence.append(None)
+                else:
+                    sentence.append(float(word))
             data.append(sentence)
     file.close()
     return data

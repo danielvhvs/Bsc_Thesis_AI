@@ -108,8 +108,6 @@ def stats_time2(soundTime):
 def all_preprocessing_steps(fileIN,dataFolder):
     soundTime = filter_start_end(fileIN+".txt",dataFolder)
     
-
-    
     stats_time(soundTime)
     
     read_file_double(fileIN+".txt",fileIN,dataFolder)

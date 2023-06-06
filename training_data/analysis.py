@@ -25,10 +25,9 @@ def stats(fileName):
     print(FS/(TQ+FQ+TS+FS))
     return TQ, FQ, TS, FS
 
-def confusion_extract():
-    fileName = "./habrok_data/run19/cross_guessesM"
+def confusion_extract(N=215,fileName = "./habrok_data/run20/cross_guessesM"):
     data = []
-    for i in range(216):
+    for i in range(N):
         fileN = fileName + str(i) + ".csv"
         df = pd.read_csv(fileN)
         total = sum(df["TQ"])+sum(df["FQ"])+sum(df["TS"])+sum(df["FS"])
