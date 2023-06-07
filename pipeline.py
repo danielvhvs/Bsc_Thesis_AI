@@ -35,8 +35,8 @@ def training(B,length,flatLength=0,flatChange=0):
     hyper_file="save_progress_training/hyper_parameters_R%s.csv"
     hyper_file = tfd.next_path(os.path.abspath(os.path.join(hyper_file)))
     
-    trainFile = "../cuesets/training_cues_flat.csv"
-    testFile = "../cuesets/validation_cues_flat.csv"
+    trainFile = "../cuesets/training_cues_flat1.csv"
+    testFile = "../cuesets/validation_cues_flat1.csv"
     trd.set_hyper_parameters(eta,nruns,B,randomSeed,hyper_file,length,flatLength,flatChange,probabilityFile=probabilityFile,\
         training_weights=training_weights,trainFile=trainFile,testFile=testFile)
     trd.training_in_r()
@@ -52,7 +52,7 @@ def multiple_runs():
             trd.cross_validation(B,L,1)
             
 if __name__ == "__main__":
-    L = (4,4)
+    L = (1,1)
     fL = 1
     fC = 0.16
     B = 2.8
@@ -65,9 +65,9 @@ if __name__ == "__main__":
     # training(B,L,fL,fC)
     
     
-    # trd.cue_distribution3("./cuesets/training_cues_flat.csv")
+    trd.cue_distribution3("./cuesets/training_cues_flat1.csv","./cuesets/training_weights_flat1.csv")
     # trd.more_stats1("./cuesets/validation_guesses_flat.csv")
-    trd.cue_pattern_stats("./cuesets/training_weights_flat.csv")
+    # trd.cue_pattern_stats("./cuesets/training_weights_flat.csv")
     
     # fileName = "data/pitch_data_statements_processed_pitch.txt"
     # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)))

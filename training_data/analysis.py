@@ -101,6 +101,36 @@ def more_stats(data,species,attributes):
     
     return
 
+def cue_pattern_stats(fileName,printIt=False):
+    df = pd.read_csv(fileName)
+    df = df.rename(columns={"Unnamed: 0":"cue"})
+    questionCues = []
+    statementCues = []
+    for idx in range(len(df)):
+        if df["question"][idx] > 0:
+            questionCues.append((df["cue"][idx],round(df["question"][idx],3)))
+        else:
+            statementCues.append((df["cue"][idx],round(df["statement"][idx],3)))
+    questionCues = sort(questionCues)[::-1]
+    statementCues = sort(statementCues)[::-1]
+    
+    weightDict = {}
+    for i,x in enumerate(questionCues):
+        weightDict[x[0]] = [x[1],"question"]
+    
+    for i,x in enumerate(statementCues):
+        weightDict[x[0]] = [x[1],"statement"]
+        
+    if printIt:
+        print(df["Unnamed: 0"])
+        print("questions:")
+        for idx in range(len(questionCues)):
+            print(f"{questionCues[idx][0]}\t{questionCues[idx][1]}")
+        print("\nstatements:")
+        for idx in range(len(statementCues)):
+            print(f"{statementCues[idx][0]}\t{statementCues[idx][1]}")
+    return weightDict
+
 def cue_distribution(fileName):
     df = pd.read_csv(fileName)
     question = 0
@@ -155,11 +185,12 @@ def cue_distribution2(fileName):
     fileName = "./cuesets/distribution_training_normal.csv"
     df2.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
     
-def cue_distribution3(fileName):
+def cue_distribution3(fileName,fileName2):
     df = pd.read_csv(fileName)
+    weightDic = cue_pattern_stats(fileName2)
     cueSet = {}
 
-    x = list(itertools.chain.from_iterable([list(itertools.product('HL',repeat=i)) for i in range(1,5)]))
+    x = list(itertools.chain.from_iterable([list(itertools.product('HL',repeat=i)) for i in range(1,2)]))
     y = ["".join(i) for i in x]
     z = [i+"#" for i in y] + ["#"+i for i in y]+["bg","empty"]
     for i in z:
@@ -172,12 +203,13 @@ def cue_distribution3(fileName):
                 cueSet[cues[idx2]][1] += 1
             else:
                 cueSet[cues[idx2]][0] += 1
-    listSet = sort2([(k, v[0],v[1]) for k, v in cueSet.items()])[::-1]
+    listSet = sort2([(k, v[0],v[1],weightDic[k][0],weightDic[k][1]) for k, v in cueSet.items()])[::-1]
 
-    df2 = pd.DataFrame({"cue":[i[0] for i in listSet],"count S":[i[1] for i in listSet],"count Q":[i[2] for i in listSet]})
+    df2 = pd.DataFrame({"cue":[i[0] for i in listSet],"count S":[i[1] for i in listSet],"count Q":[i[2] for i in listSet],\
+        "weight":[i[3] for i in listSet],"weight category":[i[4] for i in listSet]})
     print(df2)
     
-    fileName = "./cuesets/distribution2_training_flat.csv"
+    fileName = "./cuesets/distribution2_training_flat1.csv"
     df2.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
 
 
@@ -186,28 +218,6 @@ def middle(n):
 
 def sort(list_of_tuples):  
     return sorted(list_of_tuples, key = middle)  
-
-def cue_pattern_stats(fileName):
-    df = pd.read_csv(fileName)
-    df = df.rename(columns={"Unnamed: 0":"cue"})
-    questionCues = []
-    statementCues = []
-    for idx in range(len(df)):
-        if df["question"][idx] > 0:
-            questionCues.append((df["cue"][idx],round(df["question"][idx],3)))
-        else:
-            statementCues.append((df["cue"][idx],round(df["statement"][idx],3)))
-    questionCues = sort(questionCues)[::-1]
-    statementCues = sort(statementCues)[::-1]
-    
-    #print(df["Unnamed: 0"])
-    print("questions:")
-    for idx in range(len(questionCues)):
-        print(f"{questionCues[idx][0]}\t{questionCues[idx][1]}")
-    print("\nstatements:")
-    for idx in range(len(statementCues)):
-        print(f"{statementCues[idx][0]}\t{statementCues[idx][1]}")
-    return
 
 def next_path(path_pattern):
     """
