@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from .abstracting_gradient import *
 from .determine_gradient import *
+from .abstracting_flat_areas import *
 
 def test_single_plot(data,data2,time2):
     halfway = int(len(data)/2) 
@@ -17,16 +18,20 @@ def test_single_plot(data,data2,time2):
     
     frame.plot(time[:halfway],data[:halfway],label="first 0.5 (s)")
     frame.plot(time[halfway:len(data)],data[halfway:len(data)],label="last 0.5 (s)")
-    
+    # frame.plot(time2,data2)
     frame.set_xlabel("time (s)")
     frame.set_ylabel("pitch (Hz)")
     frame.set_title("pitch after interpolation")
+    frame.set_title("(b)")
     frame.legend()
-    frame2.plot(time2,data2)
-    
+    frame2.plot(time2[:50],data2[:50],label="first 0.5 (s)")
+    frame2.plot(time2[49:len(time2)-50],data2[49:len(time2)-50],c="red")
+    frame2.plot(time2[len(time2)-51:],data2[len(time2)-51:],label="last 0.5 (s)",c="orange")
+    frame2.legend()
     frame2.set_xlabel("time (s)")
     frame2.set_ylabel("pitch (Hz)")
     frame2.set_title("pitch from praat")
+    frame2.set_title("(a)")
     
     fig.tight_layout()
     plt.show()
@@ -62,16 +67,35 @@ def plot_smooth(data,boundary):
 
 def plot_flat(allData,boundary,N=0):
     data = allData[N]
-    fig,frame = plt.subplots(1,1)
+    
+    parameters = {'xtick.labelsize': 12,'ytick.labelsize': 12}
+    plt.rcParams.update(parameters)
+    
+    fig = plt.figure()
+    frame = fig.add_subplot(2,1,1)
+    frame2 = fig.add_subplot(2,1,2)
     halfway = int(len(data)/2)
     time = np.arange(len(data))/len(data)
     flatL = determine_flat_areas(data[:halfway],time[:halfway],boundary)
     flatR = determine_flat_areas(data[halfway:len(data)],time[halfway:len(data)],boundary)
+    newFlatL = flat_areas2(flatL,2,0.05)
+    newFlatR = flat_areas2(flatR,2,0.05)
     size = 3
     frame.scatter(range(len(flatL)),flatL,s=size)
     frame.scatter(range(len(flatL),len(flatL)+len(flatR)),flatR,s=size)
-    frame.set_xlabel("time (ms)")
-    frame.set_ylabel("frequency (log Hz)")
+    frame2.scatter(range(len(newFlatL)),newFlatL,s=size)
+    frame2.scatter(range(len(newFlatL),len(newFlatL)+len(newFlatR)),newFlatR,s=size)
+    fsize= 12
+    frame.set_xlabel("time (ms)",fontsize=fsize)
+    frame.set_ylabel("frequency (log Hz)",fontsize=fsize)
+    frame.set_title("flat areas")
+    frame.set_title("(a)")
+    frame2.set_xlabel("time (ms)",fontsize=fsize)
+    frame2.set_ylabel("frequency (log Hz)",fontsize=fsize)
+    frame2.set_title("filtered flat areas")
+    frame2.set_title("(b)")
+    
+    fig.tight_layout()
     plt.show()
     return
 

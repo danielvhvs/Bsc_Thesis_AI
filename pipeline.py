@@ -65,7 +65,7 @@ if __name__ == "__main__":
     # training(B,L,fL,fC)
     
     
-    trd.cue_distribution3("./cuesets/training_cues_flat1.csv","./cuesets/training_weights_flat1.csv")
+    # trd.cue_distribution3("./cuesets/training_cues_flat1.csv","./cuesets/training_weights_flat1.csv")
     # trd.more_stats1("./cuesets/validation_guesses_flat.csv")
     # trd.cue_pattern_stats("./cuesets/training_weights_flat.csv")
     
@@ -158,6 +158,10 @@ if __name__ == "__main__":
     
     
     # preprocessing()
+    fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
+    pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)),True)
+    tfd.plot_flat(pitch,2.4,1)
+    
     # fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
     # fileName2 = "data"+"/pitch_data_questions_pitch.txt"
     # fileName3 = "data"+"/pitch_data_questions_time.txt"
