@@ -38,6 +38,7 @@ def test_single_plot(data,data2,time2):
     return
 
 def plot_smooth(data,boundary):
+    data = data[1]
     halfway = int(len(data)/2)
     time = np.arange(len(data))/len(data)
     
@@ -48,19 +49,21 @@ def plot_smooth(data,boundary):
     frame = fig.add_subplot(2,1,2)
     frame2 = fig.add_subplot(2,1,1)
     
-    frame.plot(time[:halfway],smoothL)
-    frame.plot(time[halfway:len(data)],smoothR)
+    frame.plot(time[:halfway],smoothL,label="first 0.5 (s)")
+    frame.plot(time[halfway:len(data)],smoothR,label="last 0.5 (s)")
         
     frame.set_xlabel("time (s)")
     frame.set_ylabel("normalized pitch (Hz)")
     frame.set_title("(b)")
+    frame.legend()
 
-    frame2.plot(time[:halfway],data[:halfway])
-    frame2.plot(time[halfway:len(data)],data[halfway:len(data)])
+    frame2.plot(time[:halfway],data[:halfway],label="first 0.5 (s)")
+    frame2.plot(time[halfway:len(data)],data[halfway:len(data)],label="last 0.5 (s)")
     
     frame2.set_xlabel("time (s)")
     frame2.set_ylabel("normalized pitch (Hz)")
     frame2.set_title("(a)")
+    frame2.legend()
     fig.tight_layout()
     plt.show()
     return
@@ -81,10 +84,10 @@ def plot_flat(allData,boundary,N=0):
     newFlatL = flat_areas2(flatL,2,0.05)
     newFlatR = flat_areas2(flatR,2,0.05)
     size = 3
-    frame.scatter(range(len(flatL)),flatL,s=size)
-    frame.scatter(range(len(flatL),len(flatL)+len(flatR)),flatR,s=size)
-    frame2.scatter(range(len(newFlatL)),newFlatL,s=size)
-    frame2.scatter(range(len(newFlatL),len(newFlatL)+len(newFlatR)),newFlatR,s=size)
+    frame.scatter(range(len(flatL)),flatL,s=size,label="first 0.5 (s)")
+    frame.scatter(range(len(flatL),len(flatL)+len(flatR)),flatR,s=size,label="last 0.5 (s)")
+    frame2.scatter(range(len(newFlatL)),newFlatL,s=size,label="first 0.5 (s)")
+    frame2.scatter(range(len(newFlatL),len(newFlatL)+len(newFlatR)),newFlatR,s=size,label="last 0.5 (s)")
     fsize= 12
     frame.set_xlabel("time (ms)",fontsize=fsize)
     frame.set_ylabel("frequency (log Hz)",fontsize=fsize)
@@ -92,9 +95,11 @@ def plot_flat(allData,boundary,N=0):
     frame.set_title("(a)")
     frame2.set_xlabel("time (ms)",fontsize=fsize)
     frame2.set_ylabel("frequency (log Hz)",fontsize=fsize)
-    frame2.set_title("filtered flat areas")
     frame2.set_title("(b)")
-    
+    # frame2.set_title("")
+
+    frame.legend()
+    frame2.legend()
     fig.tight_layout()
     plt.show()
     return
