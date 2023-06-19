@@ -216,6 +216,30 @@ def single_bar(species,N=range(10),fileName="./habrok_data/run26/cross_guessesM"
     plt.show()
     return
 
+def middle(n):  
+    return n[0]
+
+def sort(list_of_tuples):  
+    return sorted(list_of_tuples, key = middle)  
+
+def weight_bar(fileName="./cuesets/training_weights_flat1.csv"):
+    df = pd.read_csv(fileName)
+    statements = [(df["statement"][idx],df.iloc[:,0][idx]) for idx in range(len(df))]
+    questions = [(df["question"][idx],df.iloc[:,0][idx]) for idx in range(len(df))]
+    statements = sort(statements)[:-1]
+    questions = sort(questions)[:-1]
+    print(statements)
+    print(questions)
+    fig = plt.figure()
+    frame = fig.add_subplot(1,1,1)
+    frame.bar([x[1] for x in statements], [x[0] for x in statements],width = 0.4,label="statement")
+    frame.bar([x[1] for x in questions], [x[0] for x in questions],width = 0.4,label="question")
+    
+    frame.axhline(0,linewidth=0.6, color='black')
+    frame.legend()
+    plt.show()
+    return
+
 def comparison_bar_1d(data,species,attributes):
     accuracy = np.round(np.array([(x[0]+x[2])/sum(x) for x in data]),2)
 
