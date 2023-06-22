@@ -158,11 +158,11 @@ if __name__ == "__main__":
     
     
     # preprocessing()
-    # fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
-    # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)),True)
-    # # tfd.plot_flat(pitch,2.4,1)
+    fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
+    pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)),True)
+    tfd.plot_flat(pitch,2.4,1)
     # tfd.plot_smooth(pitch,2.4)
-    trd.weight_bar()
+    # trd.weight_bar()
     
     # fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
     # fileName2 = "data"+"/pitch_data_questions_pitch.txt"
