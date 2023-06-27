@@ -7,7 +7,7 @@ import numpy as np
 from imblearn.over_sampling import RandomOverSampler, SMOTE
 from .analysis import *
 
-def training_validation_mix(randomNumber,splitIt=True):
+def training_validation_mix(randomNumber,splitIt=True,fileName1="some",fileName2="some",fileName3="some"):
     df = pd.read_csv("./data/input_cues.csv")
     randomN = random.randint(1,10000)
     if splitIt:
@@ -18,6 +18,8 @@ def training_validation_mix(randomNumber,splitIt=True):
         y_train = df["Outcomes"]
         x_test = df2["Cues"]
         y_test = df2["Outcomes"]
+        
+    df_test2 = pd.DataFrame({"Cues":x_test,"Outcomes":y_test})
     # Randomly over sample the minority class
     ros = RandomOverSampler(random_state=42)
     
@@ -35,11 +37,14 @@ def training_validation_mix(randomNumber,splitIt=True):
     df_train = pd.DataFrame({"Cues":x_train,"Outcomes":y_train})
     df_test = pd.DataFrame({"Cues":x_test,"Outcomes":y_test})
     
-    fileName = "save_progress_training/training_cues.csv"
-    df_train.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
+    fileName = "cuesets/training_cues.csv"
+    df_train.to_csv(os.path.abspath(os.path.join(fileName1)),index=False)
     
-    fileName = "save_progress_training/validation_cues.csv"
-    df_test.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
+    fileName = "cuesets/validation_cues.csv"
+    df_test.to_csv(os.path.abspath(os.path.join(fileName2)),index=False)
+    
+    fileName = "cuesets/validation_cues.csv"
+    df_test2.to_csv(os.path.abspath(os.path.join(fileName3)),index=False)
     return randomNumber
 
 def set_hyper_parameters(eta,nruns,boundary_gradient,randomSeed,fileName,length,flatLength,flatChange,\
@@ -48,6 +53,19 @@ def set_hyper_parameters(eta,nruns,boundary_gradient,randomSeed,fileName,length,
     df = pd.DataFrame({"eta":[eta],"nruns":[nruns],"boundary_gradient":[boundary_gradient],"start_length":[length[0]],"end_length":[length[1]],\
         "flat_length":[flatLength],"flat_change":[flatChange],"seed":[randomSeed],\
         "train_data":[trainFile],"test_data":[testFile],"probability_data":[probabilityFile],"training_weights":[training_weights]})
+
+    df.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
+    fileName = "data/hyper_parameters_R.csv"
+    df.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
+    return
+
+def set_hyper_parameters_double(eta,nruns,boundary_gradient,randomSeed,fileName,length,flatLength,flatChange,\
+    trainFile="../save_progress_training/training_cues.csv",testFile="../save_progress_training/validation_cues.csv",testFile2="some",\
+    probabilityFile="../save_progress_training/validation_guesses.csv",probabilityFile2="some",training_weights="../save_progresss_training/training_weights.csv"):
+    df = pd.DataFrame({"eta":[eta],"nruns":[nruns],"boundary_gradient":[boundary_gradient],"start_length":[length[0]],"end_length":[length[1]],\
+        "flat_length":[flatLength],"flat_change":[flatChange],"seed":[randomSeed],\
+        "train_data":[trainFile],"test_data":[testFile],"test_data2":[testFile2],"probability_data":[probabilityFile],"probability_data2":[probabilityFile2]\
+            ,"training_weights":[training_weights]})
 
     df.to_csv(os.path.abspath(os.path.join(fileName)),index=False)
     fileName = "data/hyper_parameters_R.csv"

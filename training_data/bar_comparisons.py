@@ -64,6 +64,64 @@ def comparison_bar_3d(data,different_graphs,species,attributes):
     plt.show()
     return
 
+def comparison_bar_example(data,different_graphs,species,attributes):
+    precisionQuestions = np.array([(x[0])/(x[0]+x[1]) for x in data])
+    precisionStatements = np.array([(x[2])/(x[2]+x[3]) for x in data])
+    
+    recallQuestions = np.array([(x[0])/(x[0]+x[3]) for x in data])
+    recallStatements = np.array([(x[2])/(x[1]+x[2]) for x in data])
+    
+    F1Q = 1/((1/precisionQuestions+1/recallQuestions)/2)
+    F1S = 1/((1/precisionStatements+1/recallStatements)/2)
+
+    precisionQuestions = np.round(precisionQuestions,2)
+    precisionStatements = np.round(precisionStatements,2)
+    
+    recallQuestions = np.round(recallQuestions,2)
+    recallStatements = np.round(recallStatements,2)
+    
+    F1Q = np.round(F1Q,2)
+    F1S = np.round(F1S,2)
+
+    accuracy = np.round(np.array([(x[0]+x[2])/sum(x) for x in data]),2)
+
+    thing = accuracy
+    allData = thing.reshape(len(different_graphs),len(species),len(attributes))
+
+    fig, ax = plt.subplots(1,1)
+
+
+    newThing = allData[0]
+
+    width = 0.10  # the width of the bars
+    multiplier = 0
+
+    oldBar = newThing
+    barData = []
+    graphName = [str(x) for x in different_graphs]
+    for i in range(len(oldBar[0])):
+        barData.append(oldBar[::,i])
+
+    multiplier = 0
+    x = np.arange(len(species))
+    for i in range(len(barData)):
+        offset = width * multiplier
+
+        rects = ax.bar(x + offset, barData[i], width, label=str(attributes[i]))
+        ax.bar_label(rects, padding=3)
+        multiplier += 1
+
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    # ax[graph].axhline(meanA)
+    ax.set_ylabel('accuracy')
+    ax.set_title(graphName[0])
+    ax.set_xticks(x + width,species)
+    ax.set_ylim(0, 1)
+    ax.legend(loc="upper left",ncol=8)
+    fig.tight_layout()
+    plt.show()
+    return
+
 def comparison_bar(data,species1,attributes):
     species = np.array(species1)
     accuracy = np.round(np.array([(x[0]+x[2])/sum(x) for x in data]),2)
@@ -213,6 +271,7 @@ def single_bar(species,N=range(10),fileName="./habrok_data/run26/cross_guessesM"
     
     frame.set_ylabel("accuracy")
     frame.set_xlabel("start and end length")
+    frame.set_title("abstraction method 2")
     plt.show()
     return
 
@@ -222,7 +281,7 @@ def middle(n):
 def sort(list_of_tuples):  
     return sorted(list_of_tuples, key = middle)  
 
-def weight_bar(fileName="./cuesets/training_weights_flat1.csv"):
+def weight_bar(fileName="./cuesets1/training_weights_flat.csv"):
     df = pd.read_csv(fileName)
     statements = [(df["statement"][idx],df.iloc[:,0][idx]) for idx in range(len(df))]
     questions = [(df["question"][idx],df.iloc[:,0][idx]) for idx in range(len(df))]
@@ -234,7 +293,8 @@ def weight_bar(fileName="./cuesets/training_weights_flat1.csv"):
     frame = fig.add_subplot(1,1,1)
     frame.bar([x[1] for x in statements], [x[0] for x in statements],width = 0.4,label="statement")
     frame.bar([x[1] for x in questions], [x[0] for x in questions],width = 0.4,label="question")
-    
+    frame.set_ylabel("weight")
+    frame.set_title("weight per cue")
     frame.axhline(0,linewidth=0.6, color='black')
     frame.legend()
     plt.show()

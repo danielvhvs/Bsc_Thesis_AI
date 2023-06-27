@@ -18,7 +18,7 @@ def preprocessing():
     print("preprocessing done")
     return
 
-def transform(B,trueFlat,lengths=(2,2),flatLength=0,flatChange=0,data="data"):
+def transform(B,trueFlat,lengths=(2,2),flatLength=0,flatChange=4,data="data"):
     tfd.generate_cue_file(B,trueFlat,lengths=lengths,flatLength=flatLength,flatChange=flatChange,data=data)
     print("transforming done")
     return
@@ -43,6 +43,23 @@ def training(B,length,flatLength=0,flatChange=0):
     print("training done")
     return
 
+def training2(B,length,flatLength=0,flatChange=0,hyper_file="some",trainFile="some",testFile="some",testFile2="some",training_weights="some",probabilityFile="some",
+              probabilityFile2="some"):
+    nruns = 100
+    eta = 0.01
+    # randomSeed = trd.training_validation_mix(42,False)
+    randomSeed = 42
+    probabilityFile = os.path.abspath(os.path.join(probabilityFile))
+    probabilityFile2 = os.path.abspath(os.path.join(probabilityFile2))
+    training_weights = os.path.abspath(os.path.join(training_weights))
+    hyper_file = os.path.abspath(os.path.join(hyper_file))
+    print(training_weights)
+    trd.set_hyper_parameters_double(eta,nruns,B,randomSeed,hyper_file,length,flatLength,flatChange,probabilityFile=probabilityFile,\
+        training_weights=training_weights,trainFile=trainFile,testFile=testFile,testFile2=testFile2,probabilityFile2=probabilityFile2)
+    trd.training_in_r("./training_data/edlscript_double.R")
+    print("training done")
+    return
+
 def multiple_runs():
     boundary = [2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3]
     length = [(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2),(4,4),(1,3),(3,1)]
@@ -52,21 +69,42 @@ def multiple_runs():
             trd.cross_validation(B,L,1)
             
 if __name__ == "__main__":
-    L = (1,1)
-    fL = 1
-    fC = 0.16
-    B = 2.8
+    # L = (1,1)
+    # fL = 1
+    # fC = 0.16
+    # B = 2.8
     # # preprocessing()
     # transform(B,True,L,fL,fC,"data")
     # transform(B,True,L,fL,fC,"data_train")
     
-    # randomSeed = trd.training_validation_mix(42,False)
+    # randomSeed = trd.training_validation_mix(42,False,"./cuesets/training_cues_flat.csv","./cuesets/validation_cues_flat.csv",\
+    #     "./cuesets/validation_cues_flat_non.csv")
     
-    # training(B,L,fL,fC)
+    # training2(B,L,fL,fC,"cuesets/hyper_parameters_flat.csv","../cuesets/training_cues_flat.csv","../cuesets/validation_cues_flat.csv",\
+    #     "../cuesets/validation_cues_flat_non.csv","./cuesets/training_weights_flat.csv","./cuesets/validation_guesses_flat.csv",\
+    #         "./cuesets/validation_guesses_flat_non.csv")
     
     
-    # trd.cue_distribution3("./cuesets/training_cues_flat1.csv","./cuesets/training_weights_flat1.csv")
-    # trd.more_stats1("./cuesets/validation_guesses_flat.csv")
+    # L = (4,4)
+    # B = 3.4
+    # # preprocessing()
+    # transform(B,False,L,data="data")
+    # transform(B,False,L,data="data_train")
+    
+    # randomSeed = trd.training_validation_mix(42,False,"./cuesets/training_cues_normal.csv","./cuesets/validation_cues_normal.csv",\
+    #     "./cuesets/validation_cues_normal_non.csv")
+    
+    # training2(B,L,fL,fC,"cuesets/hyper_parameters_normal.csv","../cuesets/training_cues_normal.csv","../cuesets/validation_cues_normal.csv",\
+    #     "../cuesets/validation_cues_normal_non.csv","./cuesets/training_weights_normal.csv","./cuesets/validation_guesses_normal.csv",\
+    #         "./cuesets/validation_guesses_normal_non.csv")
+    
+    # trd.cue_distribution3("./cuesets/training_cues_flat.csv","./cuesets/training_weights_flat.csv","./cuesets/distribution_training_flat.csv",range(1,2))
+    # trd.cue_distribution3("./cuesets/training_cues_normal.csv","./cuesets/training_weights_normal.csv","./cuesets/distribution_training_normal.csv",range(1,5))
+    
+    # trd.cue_distribution("./cuesets/training_cues_flat.csv")
+    # trd.more_stats1("./cuesets1/validation_guesses_flat_non.csv")
+    # trd.relative_weight("./cuesets1/distribution_training_flat.csv")
+    
     # trd.cue_pattern_stats("./cuesets/training_weights_flat.csv")
     
     # fileName = "data/pitch_data_statements_processed_pitch.txt"
@@ -146,6 +184,9 @@ if __name__ == "__main__":
     # attributes = [(4,4),(4,0),(0,4),(3,3),(2,2),(1,1)]
     # data = trd.confusion_extract(78,"./habrok_data/run26/cross_guessesM")
     # trd.comparison_bar(data,species,attributes)
+    
+    #run 29 normal only length varies
+    
 
     # species = [2.6,2.8]
     # attributes = [(4,4),(4,0),(0,4),(3,3),(2,2),(1,1)]
@@ -156,20 +197,30 @@ if __name__ == "__main__":
     # print(x)
     # trd.single_bar(attributes,x,"./habrok_data/run28/cross_guessesM")
     
+    # species = [3.4]
+    # attributes = [(6,6),(5,5),(4,4),(3,3),(2,2),(1,1),(4,0),(0,4),(1,0),(0,1),(5,0),(0,5)]
+    # attributes = [(4,4),(4,0),(0,4),(3,3),(2,2),(1,1)]
+    # y = 0
+    # x = [2,6,7,3,4,5]
+    # print(x)
+    # trd.single_bar(attributes,x,"./habrok_data/run29/cross_guessesM")
     
     # preprocessing()
-    fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
-    pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)),True)
-    tfd.plot_flat(pitch,2.4,1)
-    # tfd.plot_smooth(pitch,2.4)
+    # fileName = "data_train"+"/pitch_data_questions_processed_pitch.txt"
+    # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)),True)
+    # tfd.plot_flat(pitch,2.8,5)
+    # tfd.plot_smooth(pitch,2.8)
     # trd.weight_bar()
     
-    # fileName = "data"+"/pitch_data_questions_processed_pitch.txt"
-    # fileName2 = "data"+"/pitch_data_questions_pitch.txt"
-    # fileName3 = "data"+"/pitch_data_questions_time.txt"
-    # N = 1
+    trd.make_pie("./cuesets1/distribution_training_flat.csv")
+    
+    # fileName = "data_train"+"/pitch_data_questions_processed_pitch.txt"
+    # fileName2 = "data_train"+"/pitch_data_questions_pitch.txt"
+    # fileName3 = "data_train"+"/pitch_data_questions_time.txt"
+    # N = 6
     # pitch = tfd.read_file2(os.path.abspath(os.path.join(fileName)),True)[N]
     # pitch2 = tfd.read_file2(os.path.abspath(os.path.join(fileName2)),True)[N]
     # time2 = tfd.read_file2(os.path.abspath(os.path.join(fileName3)),True)[N]
+    
     # tfd.test_single_plot(pitch,pitch2,time2)
     pass

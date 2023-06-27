@@ -1,7 +1,0 @@
-cue,count S,count Q,weight,weight category
-bg,3380,3380,0.411,question
-L#,1934,1066,0.214,statement
-#H,920,1472,0.15,question
-empty,706,438,0.135,statement
-#L,393,572,0.226,question
-H#,313,1143,0.234,question

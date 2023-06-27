@@ -38,7 +38,7 @@ def test_single_plot(data,data2,time2):
     return
 
 def plot_smooth(data,boundary):
-    data = data[1]
+    data = data[5]
     halfway = int(len(data)/2)
     time = np.arange(len(data))/len(data)
     
@@ -68,7 +68,7 @@ def plot_smooth(data,boundary):
     plt.show()
     return
 
-def plot_flat(allData,boundary,N=0):
+def plot_flat(allData,boundary,N=6):
     data = allData[N]
     
     parameters = {'xtick.labelsize': 12,'ytick.labelsize': 12}
